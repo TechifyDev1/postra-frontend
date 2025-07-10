@@ -1,0 +1,32 @@
+.HeroSection {
+    display: flex;
+    justify-content: space-between;
+    height: 70vh;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.rightContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    padding-left: 5rem;
+    width: 55%;
+    gap: 1rem;
+}
+
+.leftContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 45%;
+}
+
+.heroImage {
+    width: 400px !important;
+    height: 400px !important;
+    object-fit: cover;
+    border-radius: 1rem;
+}

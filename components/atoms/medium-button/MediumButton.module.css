@@ -1,0 +1,9 @@
+.MediumButton {
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--button-border-secondary);
+    color: var(--button-text-color);
+    font-weight: 500;
+    background-color: var(--button-bg-primary);
+    transition: background-color 0.3s ease;
+}

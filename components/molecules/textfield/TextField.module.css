@@ -1,0 +1,9 @@
+.TextField {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    font-size: var(--font-size);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    transition: border-color 0.3s ease;
+}

@@ -1,0 +1,6 @@
+.SmallText {
+    font-size: 0.8rem;
+    line-height: 1.2rem;
+    font-weight: 400;
+    color: var(--text-color);
+}

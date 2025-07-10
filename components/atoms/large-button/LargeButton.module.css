@@ -1,0 +1,10 @@
+.LargeButton {
+    padding: 0 5rem;
+    font-size: 1.5rem;
+    border-radius: calc(var(--radius-lg) + 2rem);
+    border: 1px solid var(--button-border-secondary);
+    color: var(--button-text-color);
+    font-weight: 600;
+    background-color: var(--button-bg-primary);
+    transition: background-color 0.3s ease;
+}
