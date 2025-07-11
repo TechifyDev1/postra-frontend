@@ -1,7 +1,7 @@
 .HeroSection {
     display: flex;
     justify-content: space-between;
-    height: 70vh;
+    height: 73vh;
     align-items: center;
     margin-top: 2rem;
 }

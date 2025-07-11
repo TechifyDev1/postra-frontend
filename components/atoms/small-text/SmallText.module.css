@@ -3,4 +3,6 @@
     line-height: 1.2rem;
     font-weight: 400;
     color: var(--text-color);
+    margin: 0;
+    padding: 0;
 }

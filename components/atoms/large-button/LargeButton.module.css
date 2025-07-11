@@ -1,5 +1,6 @@
 .LargeButton {
-    padding: 0 5rem;
+    height: 3.2rem; /* Adjust as needed for desired height */
+    padding: 0 5rem; /* Only horizontal padding */
     font-size: 1.5rem;
     border-radius: calc(var(--radius-lg) + 2rem);
     border: 1px solid var(--button-border-secondary);
@@ -7,4 +8,7 @@
     font-weight: 600;
     background-color: var(--button-bg-primary);
     transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
