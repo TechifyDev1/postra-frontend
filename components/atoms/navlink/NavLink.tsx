@@ -9,7 +9,7 @@ interface NavLinkProps {
 }
 
 const NavLink: React.FC<NavLinkProps> = ({ title, href, name }) => {
-    const {modals, openModal, closeModal} = useContext(ModalContext);
+    const { modals, openModal } = useContext(ModalContext);
     const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>) => {
         if (name) {
             e.preventDefault();

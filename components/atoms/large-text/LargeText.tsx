@@ -1,8 +1,8 @@
 import style from './LargeText.module.css';
 
-const LargeText = ({ children }: { children: React.ReactNode }) => {
+const LargeText = ({ children, align }: { children: React.ReactNode, align?: 'left' | 'center' | 'right' }) => {
     return (
-        <h2 className={style.LargeText}>
+        <h2 className={style.LargeText} style={{ textAlign: align }}>
             {children}
         </h2>
     );

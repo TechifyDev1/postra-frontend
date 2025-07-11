@@ -24,10 +24,15 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
         signUp: false,
     });
     const openModal = (name: keyof ModalType) => {
-        setModals((prev) => ({ ...prev, [name]: true }));
+        setModals((prev) => {
+            return Object.keys(prev).reduce((acc, k) => {
+                acc[k as keyof ModalType] = k === name ? true : false;
+                return acc;
+            }, {} as ModalType)
+        });
     }
     const closeModal = (name: keyof ModalType) => {
-        setModals((prev) => ({ ...prev, [name]: false }));
+        setModals((prev) => { return ({ ...prev, [name]: false }); });
     }
     return (
         <ModalContext.Provider value={{

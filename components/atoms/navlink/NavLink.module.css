@@ -7,3 +7,9 @@
 .navLink:hover {
     color: var(--text-color-primary);
 }
+
+@media (max-width: 882px) {
+    .navLink {
+        display: none;
+    }
+}

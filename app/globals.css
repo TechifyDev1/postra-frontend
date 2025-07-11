@@ -89,3 +89,7 @@ input {
 input:focus {
   border-color: var(--input-border-focus);
 }
+
+a{
+  color: var(--background-dark);
+}

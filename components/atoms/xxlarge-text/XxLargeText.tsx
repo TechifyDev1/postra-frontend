@@ -1,8 +1,8 @@
 import style from './XxLargeText.module.css';
 
-const XxLargeText = ({ children }: { children: React.ReactNode }) => {
+const XxLargeText = ({ children, align }: { children: React.ReactNode, align?: 'left' | 'center' | 'right' }) => {
     return (
-        <h1 className={style.XxLargeText}>
+        <h1 className={style.XxLargeText} style={{ textAlign: align }}>
             {children}
         </h1>
     );
