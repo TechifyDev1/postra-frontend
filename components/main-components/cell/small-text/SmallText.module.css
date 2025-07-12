@@ -1,0 +1,33 @@
+.SmallText {
+    font-size: calc(var(--font-size-base) * 0.875); /* 14px */
+    color: var(--text-color-secondary);
+    line-height: 1.5;
+    font-family: var(--font-family-sans);
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.SmallText.bold {
+    font-weight: 700;
+}
+
+.SmallText.italic {
+    font-style: italic;
+}
+
+.SmallText.underline {
+    text-decoration: underline;
+}
+
+.SmallText a {
+    color: var(--text-color-primary);
+    text-decoration: underline;
+}
+
+.SmallText a:hover {
+    color: var(--text-color-secondary);
+    text-decoration: none;
+}

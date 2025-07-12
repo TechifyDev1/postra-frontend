@@ -1,0 +1,21 @@
+.SearchBar {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: calc(var(--radius-lg) * 1.4);
+    padding: 8px;
+    height: 1.4rem;
+}
+
+.SearchBar input {
+    border: none;
+    outline: none;
+    flex: 1;
+    padding: 4px 8px;
+}
+
+@media (max-width: 882px) {
+    .SearchBar {
+        display: none;
+    }
+}

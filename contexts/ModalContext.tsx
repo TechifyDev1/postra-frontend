@@ -1,4 +1,5 @@
-import { Children, createContext, useState } from "react";
+'use client';
+import { createContext, useState } from "react";
 
 interface ModalContextProps {
     openModal: (name: keyof ModalType) => void;

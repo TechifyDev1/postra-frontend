@@ -1,0 +1,23 @@
+.LargeText {
+    font-size: calc(var(--font-size-base) * 1.25); /* 20px */
+    color: var(--text-color-primary);
+    line-height: 1.5;
+    font-family: var(--font-family-sans);
+    margin: 0;
+    padding: 0;
+    font-weight: 600; /* Semi-bold */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.bold {
+    font-weight: 700; /* Bold */
+}
+
+.italic {
+    font-style: italic;
+}
+
+.underline {
+    text-decoration: underline;
+}
