@@ -1,0 +1,9 @@
+.PostLists {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 768px;
+    margin: 0 auto;
+    margin-top: 2rem;
+}

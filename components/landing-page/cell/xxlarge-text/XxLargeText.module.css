@@ -1,7 +1,7 @@
 .XxLargeText {
-    font-size: 5rem;
-    line-height: 4.8rem;
-    font-weight: 600;
+    font-size: var(--font-size-xxl);
+    line-height: var(--line-height-xxl);
+    font-weight: 700;
     color: var(--text-color);
     margin: 0;
     padding: 0;
@@ -10,8 +10,8 @@
 
 @media (max-width: 882px) {
     .XxLargeText {
-        font-size: 3.5rem;
-        line-height: 3.2rem;
+        /* font-size: 3.5rem;
+        line-height: 3.2rem; */
         text-align: center;
     }
 }

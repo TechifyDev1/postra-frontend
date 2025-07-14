@@ -47,3 +47,18 @@ export interface CommentButtonProps {
 // export interface SearchBarProps {
 //     device: 'desktop' | 'mobile';
 // }
+
+export interface PostListProps {
+    id: string;
+    title: string;
+    subtitle?: string;
+    image?: StaticImageData | string;
+    likes: number;
+    comments: number;
+    time: string;
+    author?: {
+        id: string;
+        name: string;
+        avatar: StaticImageData | string;
+    };
+}

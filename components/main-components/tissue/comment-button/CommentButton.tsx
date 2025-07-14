@@ -1,3 +1,4 @@
+'use client';
 import style from './CommentButton.module.css';
 import { FC } from 'react';
 import { CommentButtonProps } from '@/types/types';
@@ -7,7 +8,7 @@ import { ChatCircle } from 'phosphor-react';
 const CommentButton: FC<CommentButtonProps> = ({ onClick, count }) => {
     return (
         <button className={style.commentButton} onClick={onClick}>
-            <ChatCircle size={20} className={style.commentIcon} fill='fill' />
+            <ChatCircle size={20} className={style.commentIcon} fill='fill' color='var(--text-color-primary)' />
             <SmallText>{count}</SmallText>
         </button>
     );

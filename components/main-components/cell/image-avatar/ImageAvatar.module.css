@@ -1,22 +1,26 @@
 .ImageAvatar {
-    border-radius: 50%;
-    display: inline-block;
-    overflow: hidden;
-    position: relative;
-    vertical-align: middle;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative; /* for Image fill */
+  vertical-align: middle;
+
+  /* Responsive size using clamp (min, fluid, max) */
+  width: clamp(30px, 4vw, 50px);
+  height: clamp(30px, 4vw, 50px);
 }
 
-.large {
-    width: 50px;
-    height: 50px;
-}
 
 .small {
-    width: 30px;
-    height: 30px;
+  width: clamp(24px, 3vw, 36px);
+  height: clamp(24px, 3vw, 36px);
 }
 
 .medium {
-    width: 40px;
-    height: 40px;
+  width: clamp(30px, 4vw, 50px);
+  height: clamp(30px, 4vw, 50px);
+}
+
+.large {
+  width: clamp(40px, 5vw, 70px);
+  height: clamp(40px, 5vw, 70px);
 }

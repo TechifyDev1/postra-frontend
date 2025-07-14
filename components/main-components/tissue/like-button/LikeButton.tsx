@@ -1,3 +1,4 @@
+'use client';
 import style from './LIkeButton.module.css';
 import { FC } from 'react';
 import { LikeButtonProps } from '@/types/types';
@@ -11,6 +12,7 @@ const LikeButton: FC<LikeButtonProps> = ({ isLiked, onClick, count }) => {
                 size={20}
                 weight={isLiked ? 'fill' : 'regular'}
                 className={style.likeIcon}
+                color='var(--text-color-primary)'
             />
             <SmallText>{count}</SmallText>
         </button>

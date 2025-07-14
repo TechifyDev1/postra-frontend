@@ -9,15 +9,17 @@
     z-index: 1;
     height: var(--nav-height);
     border-bottom: 1px solid var(--input-border);
+    /* max-width: max-content; */
 }
 
 .right {
     display: flex;
-    width: 50%;
+    /* width: 50%; */
     align-items: center;
     justify-content: flex-end;
     gap: 1.4rem;
     padding-right: 1rem;
+    /* flex-shrink: 0; */
 }
 
 .left {
@@ -26,4 +28,20 @@
     align-items: center;
     justify-content: flex-start;
     gap: 1.4rem;
+}
+
+.newPostLink {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.notificationIcon {
+    cursor: pointer;
+}
+
+@media (max-width: 888px) {
+    .Write {
+        display: none;
+    }
 }

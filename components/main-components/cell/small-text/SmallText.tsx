@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import style from './SmallText.module.css';
 import { SmallTextProps } from '@/types/types';
 

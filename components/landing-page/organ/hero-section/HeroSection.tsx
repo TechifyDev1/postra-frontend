@@ -1,6 +1,5 @@
 import XxLargeText from '@/components/landing-page/cell/xxlarge-text/XxLargeText'
 import style from './HeroSection.module.css'
-import SmallText from '@/components/landing-page/cell/small-text/SmallText';
 import LargeText from '@/components/landing-page/cell/large-text/LargeText';
 import Image from 'next/image';
 import blogHero from '@/public/blog-hero.png'

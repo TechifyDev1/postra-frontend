@@ -1,6 +1,6 @@
 .SmallText {
-    font-size: 0.8rem;
-    line-height: 1.2rem;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-sm);
     font-weight: 400;
     color: var(--text-color);
     margin: 0;
@@ -9,8 +9,8 @@
 
 @media (max-width: 882px) {
     .SmallText {
-        font-size: 0.9rem;
-        line-height: 1.4rem;
+        /* font-size: 0.9rem;
+        line-height: 1.4rem; */
         text-align: center;
     }
 }
