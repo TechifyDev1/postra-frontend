@@ -1,8 +1,8 @@
 'use client';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, ReactNode, useEffect, useState } from 'react';
 import style from './Modal.module.css';
 
-interface ModalProps { children: React.ReactNode, show: boolean, onClose: () => void }
+interface ModalProps { children: ReactNode, show: boolean, onClose: () => void }
 
 const Modal: FC<ModalProps> = ({ children, show, onClose }) => {
     const [shouldRender, setShouldRender] = useState<boolean>(show);

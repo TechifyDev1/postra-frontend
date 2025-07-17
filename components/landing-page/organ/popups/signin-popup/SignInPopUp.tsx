@@ -1,16 +1,22 @@
 import Modal from "@/components/landing-page/tissue/modal/Modal";
 import { X } from "phosphor-react";
 import style from "./SignInPopUp.module.css";
-import { MouseEvent, useContext } from "react";
+import { ChangeEvent, FormEvent, MouseEvent, useContext } from "react";
 import { ModalContext } from "@/contexts/ModalContext";
 import XlargeText from "@/components/landing-page/cell/xlarge-text/XlargeText";
 import TextField from "@/components/landing-page/tissue/textfield/TextField";
 import LargeButton from "@/components/landing-page/cell/large-button/LargeButton";
 import LargeText from "@/components/landing-page/cell/large-text/LargeText";
 import SmallText from "@/components/landing-page/cell/small-text/SmallText";
+import { useToast } from "@/contexts/ToastContext";
 
 const SignInPopUp = () => {
     const { closeModal, modals, openModal } = useContext(ModalContext);
+    const { showToast } = useToast();
+    const handleClick = (e: ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        showToast("Testing Toast", "error");
+    }
     return (
         <Modal show={modals.login} onClose={() => closeModal('login')}>
             <div className={style.signInPopUp} onClick={(e) => e.stopPropagation()}>
@@ -19,7 +25,7 @@ const SignInPopUp = () => {
                 </div>
                 <div className={style.Content}>
                     <XlargeText align="alignCenter">Welcome Back.</XlargeText>
-                    <form action="" className={style.Form}>
+                    <form action="" className={style.Form} onSubmit={handleClick}>
                         <div className={style.FormGroup}>
                             <label htmlFor="email">Email/Username</label>
                             <TextField placeholder="Input your email or username" type="text" />
