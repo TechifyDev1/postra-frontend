@@ -20,38 +20,66 @@ const SignUpPopUp: React.FC = () => {
     const [fullName, setFullName] = useState<string>("");
     const [username, setUsername] = useState<string>("");
     const [confirmPass, setConfirmPass] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const { showToast } = useToast();
     const handleSignUp: () => Promise<void> = async () => {
+        setIsLoading(true);
         if (password.length === 0 || !password) {
             showToast("Password must be provided", "error");
+            setIsLoading(false);
             return;
         }
         if (username.length === 0 || !username) {
             showToast("Username can't be blank", "error");
+            setIsLoading(false);
             return;
         }
         if (email.length === 0 || !email) {
             showToast("Email must be provided", "error");
+            setIsLoading(false);
             return;
         }
         if (password !== confirmPass) {
             showToast("Password not matched, please try again", "error");
+            setIsLoading(false);
             return;
         }
-        if (fullName !== fullName) {
+        if (fullName.length === 0 || !fullName) {
             showToast("Your full name is required", "error");
+            setIsLoading(false);
+            return;
+        }
+        if (username.includes("@")) {
+            showToast("Username can't contain '@'", "error");
+            setIsLoading(false);
+            return;
+        }
+        if (username.includes(" ")) {
+            showToast("Username can't contain spaces", "error");
+            setIsLoading(false);
             return;
         }
         const options = {
             method: "POST",
-            body: JSON.stringify({ username, password, fullName, email })
+            body: JSON.stringify({ username, password, fullName, email }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         }
         try {
             const res = await fetch(createUserUrl, options);
             if (res.ok) {
                 console.log(res.body)
-                showToast("Signed Up successfully...", "success")
+                showToast("Signed Up successfully...Please Login.", "success");
+                closeModal('signUp');
+                openModal('login');
+                setIsLoading(false);
+                return;
+            }
+            else {
+                throw new Error("Signup failed");
+                setIsLoading(false);
             }
         } catch (error) {
             if (error instanceof Error) {
@@ -59,7 +87,11 @@ const SignUpPopUp: React.FC = () => {
                 console.log(error);
                 return;
             }
-            showToast("Signup unsuccessfull", 'error')
+            showToast("Signup unsuccessfull", 'error');
+            console.log(error);
+            setIsLoading(false);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -93,7 +125,7 @@ const SignUpPopUp: React.FC = () => {
                             <TextField placeholder="Confirm Password" type="password" value={confirmPass} onChange={(e) => setConfirmPass(e.target.value)} />
                         </div>
                         <div className={style.FormGroup}>
-                            <LargeButton type="submit" isLoading={false}>
+                            <LargeButton type="submit" isLoading={isLoading} disabled={isLoading}>
                                 <LargeText>Sign Up</LargeText>
                             </LargeButton>
                         </div>

@@ -3,10 +3,9 @@ import Logo from '@/components/landing-page/cell/logo/Logo';
 import style from './NavBar.module.css';
 import { FC } from 'react';
 import SearchBar from '../../tissue/search-bar/SearchBar';
-import NavLink from '@/components/landing-page/cell/navlink/NavLink';
 import { Bell, PencilLine } from 'phosphor-react';
 import ImageAvatar from '../../cell/image-avatar/ImageAvatar';
-import avatar from '@/public/default.jpg'
+import avatar from '../../../../public/default.jpg';
 import SmallText from '../../cell/small-text/SmallText';
 
 const NavBar: FC = () => {
