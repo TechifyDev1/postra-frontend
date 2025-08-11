@@ -9,8 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@lexical/react": "^0.33.1",
-    "lexical": "^0.33.1",
+    "@tiptap/extension-image": "^3.0.7",
+    "@tiptap/react": "^3.0.7",
+    "@tiptap/starter-kit": "^3.0.7",
     "next": "15.3.5",
     "phosphor-react": "^1.4.1",
     "react": "^19.0.0",

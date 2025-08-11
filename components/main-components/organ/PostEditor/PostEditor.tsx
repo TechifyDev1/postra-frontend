@@ -1,54 +1,53 @@
+import { EditorContent, useEditor } from "@tiptap/react";
+import { BubbleMenu } from "@tiptap/react/menus";
+import StarterKit from "@tiptap/starter-kit";
+import { Code, TextBolder, TextItalic } from "phosphor-react";
 import { FC } from "react";
-import { HeadingNode, QuoteNode } from '@lexical/rich-text'
-import { LexicalComposer } from "@lexical/react/LexicalComposer";
-import style from './PostEditor.module.css';
-import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { ContentEditable } from "@lexical/react/LexicalContentEditable";
-import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
-import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
-import { $getRoot, $getSelection, EditorState } from "lexical";
+import style from "./PostEditor.module.css";
 
 const PostEditor: FC = () => {
-    const theme = {};
-    const onError = (error: Error) => {
-        console.error('An error occurred:', error);
-    }
-    const editorConfig = {
-        namespace: "Postra Editor",
-        theme,
-        onError,
-        nodes: [HeadingNode, QuoteNode],
-    }
-    return (
-        <LexicalComposer initialConfig={editorConfig}>
-            <div className={style.editorContainer}>
-                <RichTextPlugin
-                    contentEditable={
-                        <ContentEditable
-                            className={style.editorInput}
-                            aria-placeholder="Start Writing Your Post..."
-                            placeholder={<div className={style.editorPlaceHolder}>Start Writing Your Post...</div>}
-                        />
-                    }
-                    placeholder={<div className={style.editorPlaceHolder}>Start Writing Your Post...</div>}
-                    ErrorBoundary={LexicalErrorBoundary}
-                />
-                <HistoryPlugin />
-                <OnChangePlugin onChange={(editorState: EditorState) => {
-                    editorState.read(() => {
-                        const root = $getRoot();
-                        const selection = $getSelection();
-                        if (selection !== null) {
-                            console.log('Current selection:', selection);
-                        }
-                        console.log('Current root:', root);
-                        console.log('Editor state has changed');
-                    })
-                }} />
-            </div>
-        </LexicalComposer>
-    );
-}
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: "<p>Hello world</p>",
+    immediatelyRender: false,
+    editorProps: {
+      attributes: {
+        class: style.editorContent,
+      },
+    },
+  });
+
+  if (!editor) return null;
+
+  return (
+    <div className={style.postEditor}>
+      <div className={style.toolbar}>
+        <button onClick={() => editor.chain().focus().toggleBold().run()}>
+          <TextBolder />
+        </button>
+        <button onClick={() => editor.chain().focus().toggleItalic().run()}>
+          <TextItalic />
+        </button>
+        <button onClick={() => editor.chain().focus().toggleCode().run()}>
+          <Code />
+        </button>
+      </div>
+
+      <EditorContent editor={editor} className={style.editorContent} />
+
+      <BubbleMenu editor={editor}>
+        <button onClick={() => editor.chain().focus().toggleBold().run()}>
+          <TextBolder />
+        </button>
+        <button onClick={() => editor.chain().focus().toggleItalic().run()}>
+          <TextItalic />
+        </button>
+        <button onClick={() => editor.chain().focus().toggleCode().run()}>
+          <Code />
+        </button>
+      </BubbleMenu>
+    </div>
+  );
+};
 
 export default PostEditor;
