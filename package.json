@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tiptap/extension-image": "^3.0.7",
-    "@tiptap/react": "^3.0.7",
+    "@floating-ui/react": "^0.27.16",
+    "@tiptap/extension-image": "^3.2.1",
+    "@tiptap/pm": "^3.2.1",
+    "@tiptap/react": "^3.2.1",
     "@tiptap/starter-kit": "^3.0.7",
     "next": "15.3.5",
     "phosphor-react": "^1.4.1",
@@ -22,6 +24,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "sass": "^1.90.0",
     "typescript": "^5"
   }
 }

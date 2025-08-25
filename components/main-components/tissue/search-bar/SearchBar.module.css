@@ -4,7 +4,6 @@
     border: 1px solid #ccc;
     border-radius: calc(var(--radius-lg) * 1.4);
     padding: 8px;
-    height: 1.4rem;
 }
 
 .SearchBar input {

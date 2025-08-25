@@ -7,7 +7,8 @@
 }
 
 .editorContent {
-  width: 100%;
+  width: 95vw;
+  min-width: 100%;
   min-height: 300px;
   border: 1px solid var(--input-border);
   border-radius: 4px;
@@ -23,4 +24,68 @@
   display: flex;
   justify-content: flex-start;
   gap: 1rem;
+}
+
+.boldButton, .italicButton, .codeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+  font-size: 1.2rem;
+}
+
+.boldButton:hover, .italicButton:hover, .codeButton:hover {
+  color: var(--button-bg-primary);
+}
+
+.active {
+  background-color: var(--button-bg-primary);
+  color: white;
+}
+
+.bubbleMenu {
+  background: var(--background-light);
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.bubbleMenu button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.imageButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+  font-size: 1.2rem;
+}
+
+.active {
+  border: 1px solid var(--button-bg-primary);
+  color: white;
+  background-color: var(--button-bg-primary);
+}
+
+.titleInput {
+  width: 100%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-bottom: 2px solid var(--input-border);
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
