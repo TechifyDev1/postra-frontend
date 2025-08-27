@@ -3,11 +3,12 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import { Code, TextBolder, TextItalic } from "phosphor-react";
-import { FC, useRef, useState } from "react";
+import { ChangeEvent, FC, useRef, useState } from "react";
 import style from "./PostEditor.module.css";
 import Image from "@tiptap/extension-image";
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node";
 import LargeButton from "@/components/landing-page/cell/large-button/LargeButton";
+import { publishPostUrl } from "@/utils";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
@@ -16,6 +17,9 @@ const PostEditor: FC = () => {
   const [bold, setBold] = useState(false);
   const [italic, setItalic] = useState(false);
   const [code, setCode] = useState(false);
+  const [title, setTitle] = useState("");
+  const [subTitle, setSubtitle] = useState("");
+  const [isPublishing, setIsPublishing] = useState(false);
   const handleImageUpload: () => Promise<string> = async () => {
     console.log("Image Uploading...");
     return new Promise((resolve, reject) => {
@@ -38,7 +42,13 @@ const PostEditor: FC = () => {
   const handleSuccess: () => void = () => {
     console.log("Image Uploaded Successfully");
   }
-
+    const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  }
+  const handleSubtitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSubtitle(e.target.value);
+  }
+  
   const handleBoldClick = () => {
     setBold(!bold);
     setCode(false);
@@ -55,7 +65,7 @@ const PostEditor: FC = () => {
     setItalic(false);
     editor?.chain().focus().toggleCode().run();
   };
-
+  
   const editor = useEditor({
     extensions: [StarterKit, Image.configure({ inline: true }), ImageUploadNode.configure({
       accept: "image/*",
@@ -73,17 +83,44 @@ const PostEditor: FC = () => {
       },
     },
   });
-
+  
   if (!editor) return null;
+  const handlePublish = async () => {
+    setIsPublishing(true);
+    try {
+      const res = await fetch(publishPostUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: 'include' as RequestCredentials,
+        body: JSON.stringify({
+          title,
+          subTitle,
+          content: editor.getHTML()
+        })
+      });
+      if (!res.ok) {
+        const errorMessage = await res.text();
+        console.log("Error: ", errorMessage);
+        throw new Error("Failed to publish post");
+      } else
+        console.log("Post Published Successfully");
+      
+    } catch (err) {
+      if(err instanceof Error) console.log("Error: ", err.message);
+    } finally {
+      setIsPublishing(false);
+    }
+  }
 
-  let editorContent = editor.getHTML();
-  console.log(editorContent);
 
   return (
     <div className={style.postEditor}>
       <input type="file" accept="image/*" style={{display: "none"}} ref={imgInpRef} />
 
-      <input type="text" placeholder="Title" className={style.titleInput} />
+      <input type="text" placeholder="Title" className={style.titleInput} onChange={handleTitleChange} />
+      <input type="text" placeholder="Subtitle (optional)" className={style.subtitleInput} onChange={handleSubtitleChange} />
       <div className={style.toolbar}>
         <button onClick={handleBoldClick} className={style.boldButton + (bold ? ` ${style.active}` : '')}>
           <TextBolder />
@@ -119,7 +156,7 @@ const PostEditor: FC = () => {
         </button>
       </BubbleMenu>
 
-      <LargeButton style={{ marginTop: '20px', alignSelf: 'flex-end' }} onClick={() => { console.log(editor.getHTML()); }}>
+      <LargeButton style={{ marginTop: '20px', alignSelf: 'flex-end' }} onClick={handlePublish} disabled={isPublishing} isLoading={isPublishing}>
         <span>Publish</span>
       </LargeButton>
     </div>

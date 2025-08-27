@@ -1,5 +1,5 @@
 .logo {
-  font-size: clamp(1rem, 2vw + 0.5rem, 2.5rem); /* Responsive text size */
+  font-size: clamp(1rem, 2vw + 0.5rem, 2rem); /* Responsive text size */
   font-weight: bold;
   color: var(--text-color-primary);
   line-height: 1;
@@ -9,5 +9,6 @@
   h1 {
     margin: 0;
     padding: 0;
+    user-select: none;
   }
 }
