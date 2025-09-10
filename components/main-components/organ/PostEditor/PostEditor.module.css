@@ -16,6 +16,13 @@
   box-sizing: border-box;
 }
 
+.editorContent img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
 .toolbar {
   border-bottom: 1px solid #ccc;
   padding-bottom: 0.5rem;
@@ -97,4 +104,41 @@
 
 .titleInput::placeholder, .subtitleInput::placeholder {
   color: var(--input-border);
+}
+
+.postBannerContainer {
+  width: 100%;
+  height: 200px;
+  border: 2px dashed var(--input-border);
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+
+  * {
+    cursor: pointer;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: black;
+    border: none;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 10px;
+    box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
+  }
 }
