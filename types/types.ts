@@ -49,7 +49,7 @@ export interface CommentButtonProps {
 // }
 
 export interface PostListProps {
-    id: string;
+    id?: number;
     title: string;
     subtitle?: string;
     image?: StaticImageData | string;

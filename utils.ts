@@ -5,5 +5,6 @@ export const getUserUrl = (username: string): string => `${baseurl}/users/profil
 export const publishPostUrl = `${baseurl}/posts/create`;
 export const uploadUrl = `${baseurl}/upload`;
 export const deleteUrl = (publicId: string) => `${baseurl}/delete?publicId=${publicId}`;
+export const getPosts = (page: number, size: number) => `${baseurl}/posts/?page=${page}&size=${size}`;
 
 export const frontendBaseUrl = "http://localhost:3000";

@@ -1,3 +1,4 @@
+"use client";
 import { PostListProps } from "@/types/types";
 import { FC } from "react";
 import style from './PostList.module.css';
@@ -21,7 +22,7 @@ const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, commen
                     {subtitle && <LandingLargeText align="left">{subtitle}</LandingLargeText>}
                 </div>
                 <div className={style.right}>
-                    {image && <Image src={image} alt={title} layout="responsive" className={style.image} />}
+                    {image && <Image src={image} alt={title} layout="responsive" className={style.image} width={800} height={400} />}
                 </div>
             </div>
             <div className={style.bottom}>
