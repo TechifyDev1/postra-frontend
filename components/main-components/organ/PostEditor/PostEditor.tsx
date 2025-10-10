@@ -261,7 +261,6 @@ const PostEditor: FC = () => {
           <X color="white" />
         </button>}
         {postBannerUrl !== "" || postBannerUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
           <img src={postBannerUrl === "" ? undefined : postBannerUrl.toString()} alt="Post Banner" className={style.postBanner} ref={bannerImgRef} />) : (
           <div className={style.postBannerPlaceholder}>Post Banner</div>
         )}

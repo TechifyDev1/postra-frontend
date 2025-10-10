@@ -1,0 +1,87 @@
+.postPage {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* background: #fff; */
+}
+
+/* Hero Banner */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 25vh;
+  overflow: hidden;
+
+  .postBanner {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .heroOverlay {
+    position: absolute;
+    bottom: 10%;
+    left: 5%;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+
+    .postTitle {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .postSubtitle {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+  }
+}
+
+/* Content Section */
+.postContent {
+  padding: 2rem 5%;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.8;
+  font-size: 1rem;
+
+  .content {
+    p {
+      margin-bottom: 1.2rem;
+    }
+
+    h2, h3 {
+      margin-top: 1.8rem;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+  }
+}
+
+.authorInfo {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    gap: 2rem;
+    border-top: 1px solid var(--input-border);
+    border-bottom: 1px solid var(--input-border);
+    padding: 0.5rem 0;
+
+
+    img {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+}
