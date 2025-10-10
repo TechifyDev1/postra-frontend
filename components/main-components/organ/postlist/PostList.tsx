@@ -10,7 +10,7 @@ import Image from "next/image";
 import CommentButton from "../../tissue/comment-button/CommentButton";
 import LandingLargeText from '@/components/landing-page/cell/large-text/LargeText';
 
-const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, comments, time, author }) => {
+const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, comments, time, author, slug }) => {
     return (
         <section className={style.PostList}>
                     <ProfileTag name="Yusuf Abdulqudus" />
@@ -30,7 +30,7 @@ const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, commen
                     <SmallText align="alignLeft" italic={true}>
                         {time}
                     </SmallText>
-                    <LikeButton count={likes} isLiked={false} onClick={() => { }} />
+                    <LikeButton count={likes} isLiked={false} slug={slug}/>
                     <CommentButton count={comments} onClick={() => { }} />
                 </div>
             </div>

@@ -9,6 +9,7 @@ interface postInterface {
     title: string;
     subTitle: string;
     postBanner: string;
+    slug: string;
 }
 
 const PostLists: FC = async () => {
@@ -28,6 +29,7 @@ const PostLists: FC = async () => {
                     likes={10} comments={5}
                     time="2 hours ago"
                     key={post.id}
+                    slug={post.slug}
                 />))
             }
         </main>

@@ -6,6 +6,8 @@ import { notFound } from "next/navigation";
 import { FC } from "react";
 import styles from "./page.module.css";
 import MediumButton from "@/components/landing-page/cell/medium-button/MediumButton";
+import { ThumbsUp } from "phosphor-react";
+import LikeButton from "@/components/main-components/tissue/like-button/LikeButton";
 
 export async function generateMetadata({
   params,
@@ -109,6 +111,11 @@ const page: FC<{ params: { username: string; postSlug: string } }> = async ({
         </div>
       </section>
 
+      {/* Like section */}
+      <section>
+        <LikeButton isLiked={false} count={30} slug={post.slug} />
+      </section>
+
       {/* Content Section */}
       <section className={styles.postContent}>
         <div
@@ -118,10 +125,13 @@ const page: FC<{ params: { username: string; postSlug: string } }> = async ({
       </section>
 
       <section className={styles.authorInfo}>
-        <img src={post.authorProfilePic ? post.authorProfilePic : "/default.jpg"} alt={`${post.authorFullName}'s Profile Pic`} />
+        <img
+          src={post.authorProfilePic ? post.authorProfilePic : "/default.jpg"}
+          alt={`${post.authorFullName}'s Profile Pic`}
+        />
         <p>{post.authorFullName}</p>
         <MediumButton>
-          <p style={{margin: "0", padding: "0"}}>Follow</p>
+          <p style={{ margin: "0", padding: "0" }}>Follow</p>
         </MediumButton>
       </section>
     </div>
