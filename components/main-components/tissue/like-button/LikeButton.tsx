@@ -7,9 +7,11 @@ import { ThumbsUp } from "phosphor-react";
 import { likeUrl } from "@/utils";
 import { useToast } from "@/contexts/ToastContext";
 
-const LikeButton: FC<LikeButtonProps> = ({ isLiked, count, slug }) => {
+const LikeButton: FC<LikeButtonProps> = ({  count, slug }) => {
+  // initialize from prop so the initial render reflects parent-provided liked state
   const [data, setData] = useState<boolean>(false);
   const { showToast } = useToast();
+
   useEffect(() => {
     const checkIsLiked = async () => {
       const res = await fetch(likeUrl(slug) + "/is-liked", {
@@ -20,10 +22,11 @@ const LikeButton: FC<LikeButtonProps> = ({ isLiked, count, slug }) => {
         credentials: "include",
       });
       const result = await res.json();
-      setData(result.isLiked || false);
+      console.log("result", result);
+      setData(result);
     };
     checkIsLiked();
-  }, []);
+  }, [slug]);
   const handleLike = async () => {
     try {
       const res = await fetch(likeUrl(slug), {
@@ -33,10 +36,11 @@ const LikeButton: FC<LikeButtonProps> = ({ isLiked, count, slug }) => {
         },
         credentials: "include",
       });
-      setData(res.ok);
       const result = await res.json();
       console.log(result);
       showToast(`${result.message === "Liked" ? "Post liked successfully" : "Post unliked successfully"}`, "success");
+      // update local state immediately from API response
+      setData(result.message === "Liked" ? true : false);
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -46,7 +50,7 @@ const LikeButton: FC<LikeButtonProps> = ({ isLiked, count, slug }) => {
       showToast("Error Liking the post", "error");
       setData(false);
     }
-    console.log(data);
+    // Avoid logging state immediately after setState; state updates are async.
   };
   return (
     <button className={style.likeButton} onClick={handleLike}>

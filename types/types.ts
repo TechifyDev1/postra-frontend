@@ -40,8 +40,9 @@ export interface LikeButtonProps {
 }
 
 export interface CommentButtonProps {
-  onClick: () => void;
+  onClick?: () => void;
   count: number;
+  slug?: string;
 }
 
 // export interface SearchBarProps {
@@ -56,10 +57,6 @@ export interface PostListProps {
   likes: number;
   comments: number;
   time: string;
-  author?: {
-    id: string;
-    name: string;
-    avatar: StaticImageData | string;
-  };
   slug: string;
+  authorFullName?: string;
 }

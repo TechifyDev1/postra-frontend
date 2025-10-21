@@ -8,6 +8,7 @@ import styles from "./page.module.css";
 import MediumButton from "@/components/landing-page/cell/medium-button/MediumButton";
 import { ThumbsUp } from "phosphor-react";
 import LikeButton from "@/components/main-components/tissue/like-button/LikeButton";
+import CommentButton from "@/components/main-components/tissue/comment-button/CommentButton";
 
 export async function generateMetadata({
   params,
@@ -94,6 +95,7 @@ const page: FC<{ params: { username: string; postSlug: string } }> = async ({
     return notFound();
   }
   const post = await res.json();
+  console.log(post)
   return (
     <div className={styles.postPage}>
       <NavBar />
@@ -112,8 +114,9 @@ const page: FC<{ params: { username: string; postSlug: string } }> = async ({
       </section>
 
       {/* Like section */}
-      <section>
-        <LikeButton isLiked={false} count={30} slug={post.slug} />
+      <section className={styles.likeSection}>
+        <LikeButton isLiked={false} count={post.likeCount} slug={post.slug} />
+        <CommentButton count={post.commentCount | 0} slug={post.slug} />
       </section>
 
       {/* Content Section */}

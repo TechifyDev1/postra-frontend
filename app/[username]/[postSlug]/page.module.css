@@ -85,3 +85,16 @@
         object-fit: cover;
     }
 }
+
+.likeSection {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    gap: 2rem;
+    border-top: 1px solid var(--input-border);
+    border-bottom: 1px solid var(--input-border);
+    padding: 0.5rem 0;
+}

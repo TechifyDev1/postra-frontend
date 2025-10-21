@@ -1,7 +1,7 @@
 import XxLargeText from '@/components/landing-page/cell/xxlarge-text/XxLargeText'
 import style from './HeroSection.module.css'
 import LargeText from '@/components/landing-page/cell/large-text/LargeText';
-import Image from 'next/image';
+import Image from "next/image";
 import blogHero from '@/public/blog-hero.png'
 import LargeButton from '@/components/landing-page/cell/large-button/LargeButton';
 

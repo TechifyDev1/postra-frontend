@@ -10,10 +10,10 @@ import Image from "next/image";
 import CommentButton from "../../tissue/comment-button/CommentButton";
 import LandingLargeText from '@/components/landing-page/cell/large-text/LargeText';
 
-const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, comments, time, author, slug }) => {
+const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, comments, time, slug, authorFullName }) => {
     return (
         <section className={style.PostList}>
-                    <ProfileTag name="Yusuf Abdulqudus" />
+            <ProfileTag name={authorFullName ?? ''} />
             <div className={style.top}>
                 <div className={style.left}>
                     <LargeText align="alignLeft" bold={true}>

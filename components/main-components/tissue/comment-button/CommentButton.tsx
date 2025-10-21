@@ -5,7 +5,7 @@ import { CommentButtonProps } from '@/types/types';
 import SmallText from '../../cell/small-text/SmallText';
 import { ChatCircle } from 'phosphor-react';
 
-const CommentButton: FC<CommentButtonProps> = ({ onClick, count }) => {
+const CommentButton: FC<CommentButtonProps> = ({ onClick, count, slug }) => {
     return (
         <button className={style.commentButton} onClick={onClick}>
             <ChatCircle size={20} className={style.commentIcon} fill='fill' color='var(--text-color-primary)' />
