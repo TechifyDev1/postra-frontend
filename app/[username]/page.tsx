@@ -8,15 +8,18 @@ import XlargeText from "@/components/landing-page/cell/xlarge-text/XlargeText";
 import LargeText from "@/components/landing-page/cell/large-text/LargeText";
 import SmallText from "@/components/main-components/cell/small-text/SmallText";
 import LargeButton from "@/components/landing-page/cell/large-button/LargeButton";
+import { cookies } from "next/headers";
 
 export async function generateMetadata({ params }: { params: { username: string } }): Promise<Metadata> {
-    const options = {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Client-Type': 'web'
-        }
-    }
+  const cookieStore = cookies();
+  const tokenCookie = (await cookieStore).get("token");
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${tokenCookie?.value}`,
+    },
+  };
     const { username } = await params;
     const res = await fetch(getUserUrl(username), options);
     if (!res.ok) {
@@ -46,17 +49,23 @@ export async function generateMetadata({ params }: { params: { username: string 
 }
 
 const page: FC<{ params: { username: string } }> = async ({ params }) => {
-    const options = {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Client-Type': 'web'
-        }
-    }
+const cookieStore = cookies();
+const tokenCookie = (await cookieStore).get("token"); // or whatever name you store JWT as
+
+const options = {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${tokenCookie?.value}`,
+    "X-Client-Type": "web",
+  },
+};
+
     const { username } = await params;
     const res = await fetch(getUserUrl(username), options);
     if (!res.ok) return notFound();
-    const user = await res.json();
+    const data = await res.json();
+    const user = data.data;
 
     if (!user) return notFound();
 

@@ -9,10 +9,11 @@ import LikeButton from "../../tissue/like-button/LikeButton";
 import Image from "next/image";
 import CommentButton from "../../tissue/comment-button/CommentButton";
 import LandingLargeText from '@/components/landing-page/cell/large-text/LargeText';
+import Link from "next/link";
 
-const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, comments, time, slug, authorFullName }) => {
+const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, comments, time, slug, authorFullName, authorUsername }) => {
     return (
-        <section className={style.PostList}>
+        <Link className={style.PostList} href={`${authorUsername}/${slug}`} key={id}>
             <ProfileTag name={authorFullName ?? ''} />
             <div className={style.top}>
                 <div className={style.left}>
@@ -34,7 +35,7 @@ const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, commen
                     <CommentButton count={comments} onClick={() => { }} />
                 </div>
             </div>
-        </section>
+        </Link>
     )
 }
 

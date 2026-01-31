@@ -7,3 +7,9 @@
     margin: 0 auto;
     margin-top: 2rem;
 }
+
+.noPost {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

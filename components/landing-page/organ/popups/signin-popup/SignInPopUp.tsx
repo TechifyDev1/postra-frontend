@@ -10,6 +10,7 @@ import LargeText from "@/components/landing-page/cell/large-text/LargeText";
 import SmallText from "@/components/landing-page/cell/small-text/SmallText";
 import { useToast } from "@/contexts/ToastContext";
 import { loginUrl } from "@/utils";
+import { useUserContext } from "@/hooks/use-user-context";
 
 const SignInPopUp = () => {
     const { closeModal, modals, openModal } = useContext(ModalContext);
@@ -17,6 +18,7 @@ const SignInPopUp = () => {
     const [password, setPassword] = useState<string>("");
     const [username, setUsername] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const {setUser} = useUserContext();
     const { showToast } = useToast();
     const handleUsernameOrEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -58,7 +60,10 @@ const SignInPopUp = () => {
             }
             const data = await res.json();
             console.log(data);
-            showToast("Login successful", "success");
+            showToast(data.message, "success");
+            if(data.data != null) {
+                setUser(data.data);
+            }
             closeModal('login');
             setIsLoading(false);
         } catch (error) {

@@ -3,6 +3,9 @@ import style from "./PostLists.module.css";
 import PostList from "../postlist/PostList";
 import blogHero from "@/public/blog-hero.png";
 import { getPosts, truncate } from "@/utils";
+import Image from "next/image";
+import noPostPic from "../../../../public/Book lover.gif"
+import SmallText from "../../cell/small-text/SmallText";
 
 interface postInterface {
   id: number;
@@ -11,6 +14,8 @@ interface postInterface {
   postBanner: string;
   slug: string;
   authorFullName?: string;
+  username: string;
+  likeCount: number;
 }
 
 const PostLists: FC = async () => {
@@ -24,6 +29,13 @@ const PostLists: FC = async () => {
   const posts = await res.json();
   console.log(posts);
   const postsLists = posts.content;
+  if(postsLists.length == 0) {
+    return <div className={style.noPost}>
+      <Image src={noPostPic} alt="Book lover" width={500} height={500} />
+      <h2>Oh! No post yet!</h2>
+      <SmallText>Come back next time</SmallText>
+    </div>
+  }
   return (
     <main className={style.PostLists}>
       {postsLists.map(
@@ -34,12 +46,13 @@ const PostLists: FC = async () => {
               title={truncate(post.title, 60)}
               subtitle={truncate(post.subTitle, 100)}
               image={post.postBanner ?? blogHero}
-              likes={10}
+              likes={post.likeCount}
               comments={5}
               time="2 hours ago"
               key={post.id}
               slug={post.slug}
               authorFullName={post.authorFullName}
+              authorUsername={post.username}
             />
           )
         )

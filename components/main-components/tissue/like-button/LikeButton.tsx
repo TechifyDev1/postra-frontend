@@ -1,15 +1,16 @@
 "use client";
 import style from "./LIkeButton.module.css";
-import { FC, useEffect, useState } from "react";
+import { FC, MouseEventHandler, useEffect, useState } from "react";
 import { LikeButtonProps } from "@/types/types";
 import SmallText from "../../cell/small-text/SmallText";
 import { ThumbsUp } from "phosphor-react";
 import { likeUrl } from "@/utils";
 import { useToast } from "@/contexts/ToastContext";
 
-const LikeButton: FC<LikeButtonProps> = ({  count, slug }) => {
+const LikeButton: FC<LikeButtonProps> = ({ count, slug }) => {
   // initialize from prop so the initial render reflects parent-provided liked state
   const [data, setData] = useState<boolean>(false);
+  const [likeCounts, setLikeCounts] = useState<number>();
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -26,8 +27,11 @@ const LikeButton: FC<LikeButtonProps> = ({  count, slug }) => {
       setData(result);
     };
     checkIsLiked();
+    setLikeCounts(count);
   }, [slug]);
-  const handleLike = async () => {
+  const handleLike: MouseEventHandler<HTMLButtonElement> = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     try {
       const res = await fetch(likeUrl(slug), {
         method: "POST",
@@ -41,6 +45,7 @@ const LikeButton: FC<LikeButtonProps> = ({  count, slug }) => {
       showToast(`${result.message === "Liked" ? "Post liked successfully" : "Post unliked successfully"}`, "success");
       // update local state immediately from API response
       setData(result.message === "Liked" ? true : false);
+      setLikeCounts(result.totalLikes);
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -60,7 +65,7 @@ const LikeButton: FC<LikeButtonProps> = ({  count, slug }) => {
         className={style.likeIcon}
         color="var(--text-color-primary)"
       />
-      <SmallText>{count}</SmallText>
+      <SmallText>{likeCounts}</SmallText>
     </button>
   );
 };

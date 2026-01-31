@@ -6,7 +6,6 @@ import { notFound } from "next/navigation";
 import { FC } from "react";
 import styles from "./page.module.css";
 import MediumButton from "@/components/landing-page/cell/medium-button/MediumButton";
-import { ThumbsUp } from "phosphor-react";
 import LikeButton from "@/components/main-components/tissue/like-button/LikeButton";
 import CommentButton from "@/components/main-components/tissue/comment-button/CommentButton";
 
@@ -16,18 +15,24 @@ export async function generateMetadata({
   params: { username: string; postSlug: string };
 }): Promise<Metadata> {
   const { username, postSlug } = await params;
-  const cookieStore = cookies();
-  const tokenCookie = (await cookieStore).get("token");
-  const options = {
+  // const cookieStore = cookies();
+  // const tokenCookie = (await cookieStore).get("token");
+  // const options = {
+  //   method: "GET",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   credentials: "include",
+  // };
+  // console.log(options);
+
+  const res = await fetch(getApost(username, postSlug), {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${tokenCookie?.value}`,
     },
-  };
-  console.log(options);
-
-  const res = await fetch(getApost(username, postSlug), options);
+    credentials: "include",
+  });
 
   if (!res.ok) {
     return {
