@@ -8,6 +8,7 @@ import styles from "./page.module.css";
 import MediumButton from "@/components/landing-page/cell/medium-button/MediumButton";
 import LikeButton from "@/components/main-components/tissue/like-button/LikeButton";
 import CommentButton from "@/components/main-components/tissue/comment-button/CommentButton";
+import AuthorInfo from "@/components/main-components/tissue/authorInfo/AuthorInfo";
 
 export async function generateMetadata({
   params,
@@ -131,17 +132,7 @@ const page: FC<{ params: { username: string; postSlug: string } }> = async ({
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </section>
-
-      <section className={styles.authorInfo}>
-        <img
-          src={post.authorProfilePic ? post.authorProfilePic : "/default.jpg"}
-          alt={`${post.authorFullName}'s Profile Pic`}
-        />
-        <p>{post.authorFullName}</p>
-        <MediumButton>
-          <p style={{ margin: "0", padding: "0" }}>Follow</p>
-        </MediumButton>
-      </section>
+      <AuthorInfo post={post} />
     </div>
   );
 };

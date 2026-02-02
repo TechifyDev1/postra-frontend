@@ -128,7 +128,7 @@ const page: FC<{ params: { username: string } }> = async ({ params }) => {
                                 subtitle={truncate(post.subTitle, 100)}
                                 image={post.postBanner ?? blogHero}
                                 likes={post.likeCount}
-                                comments={0} // Backend doesn't provide comment count yet in this endpoint
+                                comments={post.commentCount}
                                 time="Recently"
                                 slug={post.slug}
                                 authorFullName={post.authorFullName}
@@ -143,7 +143,7 @@ const page: FC<{ params: { username: string } }> = async ({ params }) => {
                                     : "This user currently doesn't have posts"}
                             </LargeText>
                             {user.currentUser && (
-                                <Link href="/publish" style={{ marginTop: "1rem", display: "inline-block" }}>
+                                <Link href="/new" style={{ marginTop: "1rem", display: "inline-block" }}>
                                     <LargeButton>Create Post</LargeButton>
                                 </Link>
                             )}

@@ -42,10 +42,23 @@ const LikeButton: FC<LikeButtonProps> = ({ count, slug }) => {
       });
       const result = await res.json();
       console.log(result);
-      showToast(`${result.message === "Liked" ? "Post liked successfully" : "Post unliked successfully"}`, "success");
-      // update local state immediately from API response
-      setData(result.message === "Liked" ? true : false);
-      setLikeCounts(result.totalLikes);
+
+      if (result.error) {
+        showToast(result.error, "error");
+        return;
+      }
+
+      if (result.message === "Liked") {
+        showToast("Post liked successfully", "success");
+        setData(true);
+      } else if (result.message === "Unliked") {
+        showToast("Post unliked successfully", "success");
+        setData(false);
+      }
+
+      if (result.totalLikes !== undefined) {
+        setLikeCounts(result.totalLikes);
+      }
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);

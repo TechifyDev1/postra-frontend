@@ -14,13 +14,13 @@ const Modal: FC<ModalProps> = ({ children, show, onClose }) => {
     }, [show]);
 
     const handleAnimationEnd = () => {
-        if(!show) {
+        if (!show) {
             setShouldRender(false);
         }
     }
 
-    return ( shouldRender &&
-        <div className={`${style.Modal} ${show ? style.fadeIn : style.fadeOut}`} onAnimationEnd={handleAnimationEnd} style={{ display: shouldRender ? 'flex' : 'none' }} onClick={onClose}>
+    return (shouldRender &&
+        <div className={`${style.Modal} ${show ? style.fadeIn : style.fadeOut}`} onAnimationEnd={handleAnimationEnd} style={{ display: shouldRender ? 'flex' : 'none' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); return onClose }}>
             {children}
         </div>
     )

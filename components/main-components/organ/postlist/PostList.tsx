@@ -10,6 +10,7 @@ import Image from "next/image";
 import CommentButton from "../../tissue/comment-button/CommentButton";
 import LandingLargeText from '@/components/landing-page/cell/large-text/LargeText';
 import Link from "next/link";
+import CommentPopUp from "../comment-popup/CommentPopUp";
 
 const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, comments, time, slug, authorFullName, authorUsername }) => {
     return (
@@ -35,6 +36,7 @@ const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, commen
                     <CommentButton count={comments} onClick={() => { }} />
                 </div>
             </div>
+            <CommentPopUp />
         </Link>
     )
 }
