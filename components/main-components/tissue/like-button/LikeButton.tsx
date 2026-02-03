@@ -1,30 +1,51 @@
 "use client";
 import style from "./LIkeButton.module.css";
-import { FC, MouseEventHandler, useEffect, useState } from "react";
+import { FC, MouseEventHandler, useContext, useEffect, useState } from "react";
 import { LikeButtonProps } from "@/types/types";
 import SmallText from "../../cell/small-text/SmallText";
 import { ThumbsUp } from "phosphor-react";
 import { likeUrl } from "@/utils";
 import { useToast } from "@/contexts/ToastContext";
+import { useUserContext } from "@/hooks/use-user-context";
+import { ModalContext } from "@/contexts/ModalContext";
+import SignInPopUp from "@/components/landing-page/organ/popups/signin-popup/SignInPopUp";
+import SignUpPopUp from "@/components/landing-page/organ/popups/signup-popup/SignUpPopUp";
 
 const LikeButton: FC<LikeButtonProps> = ({ count, slug }) => {
-  // initialize from prop so the initial render reflects parent-provided liked state
   const [data, setData] = useState<boolean>(false);
   const [likeCounts, setLikeCounts] = useState<number>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const { user } = useUserContext();
+  const { openModal } = useContext(ModalContext);
   const { showToast } = useToast();
 
   useEffect(() => {
     const checkIsLiked = async () => {
-      const res = await fetch(likeUrl(slug) + "/is-liked", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      const result = await res.json();
-      console.log("result", result);
-      setData(result);
+      if (!user) {
+        showToast("You are not logged in, please login", "error");
+        openModal("login");
+        return;
+      }
+      if (loading) return;
+      setLoading(true);
+      try {
+        const res = await fetch(likeUrl(slug) + "/is-liked", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+        const result = await res.json();
+        console.log("result", result);
+        setData(result);
+      } catch (error) {
+        if (error instanceof Error) {
+          console.log(error.message);
+        }
+      } finally {
+        setLoading(false);
+      }
     };
     checkIsLiked();
     setLikeCounts(count);
@@ -32,6 +53,13 @@ const LikeButton: FC<LikeButtonProps> = ({ count, slug }) => {
   const handleLike: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (!user) {
+      showToast("You are not logged in, please log in to like", "error");
+      openModal("login");
+      return;
+    }
+    if (loading) return;
+    setLoading(true);
     try {
       const res = await fetch(likeUrl(slug), {
         method: "POST",
@@ -67,19 +95,24 @@ const LikeButton: FC<LikeButtonProps> = ({ count, slug }) => {
       console.log(error);
       showToast("Error Liking the post", "error");
       setData(false);
+    } finally {
+      setLoading(false)
     }
-    // Avoid logging state immediately after setState; state updates are async.
   };
   return (
-    <button className={style.likeButton} onClick={handleLike}>
-      <ThumbsUp
-        size={20}
-        weight={data ? "fill" : "regular"}
-        className={style.likeIcon}
-        color="var(--text-color-primary)"
-      />
-      <SmallText>{likeCounts}</SmallText>
-    </button>
+    <>
+      <button className={style.likeButton} onClick={handleLike}>
+        <ThumbsUp
+          size={20}
+          weight={data ? "fill" : "regular"}
+          className={style.likeIcon}
+          color="var(--text-color-primary)"
+        />
+        <SmallText>{likeCounts}</SmallText>
+      </button>
+      <SignInPopUp />
+      <SignUpPopUp />
+    </>
   );
 };
 

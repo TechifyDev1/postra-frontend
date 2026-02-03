@@ -10,5 +10,7 @@ export const getPosts = (page: number, size: number) => `${baseurl}/posts/?page=
 export const truncate = (text: string, maxLenght: number) => text.length > maxLenght ? text.slice(0, maxLenght) + "..." : text;
 export const getApost = (username: string, slug: string) => `${baseurl}/posts/${username}/${slug}`;
 export const likeUrl = (slug: string) => `${baseurl}/like/${slug}`;
+export const addCommentUrl = (postSlug: string) => `${baseurl}/comments/add/${postSlug}`;
+export const getCommentsUrl = (postSlug: string) => `${baseurl}/comments/${postSlug}`
 
 export const frontendBaseUrl = "http://localhost:3000";

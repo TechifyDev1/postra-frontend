@@ -1,13 +1,20 @@
 import { FC } from "react";
-import style from "./CommentPopUp.module.css";
 import Modal from "@/components/landing-page/tissue/modal/Modal";
 import CommentBox from "../../tissue/comment-box/CommentBox";
+import { CommentsProvider } from "@/app/providers/CommentsProvider";
+import { UseShowComments } from "@/hooks/use-show-comments";
 
-const CommentPopUp: FC = () => {
+const CommentPopUp: FC<{ postSlug: string }> = ({ postSlug }) => {
+    const showCommentsHook = UseShowComments();
+    const close = () => {
+        showCommentsHook.setShow(false);
+    }
     return (
-        <Modal show={true} onClose = {() => {}}>
-            <CommentBox />
-        </Modal>
+        <CommentsProvider postSlug={postSlug}>
+            <Modal show={showCommentsHook.show} onClose={close}>
+                <CommentBox postSlug={postSlug} />
+            </Modal>
+        </CommentsProvider>
     )
 }
 

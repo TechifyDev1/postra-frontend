@@ -40,9 +40,8 @@ export interface LikeButtonProps {
 }
 
 export interface CommentButtonProps {
-  onClick?: () => void;
   count: number;
-  slug?: string;
+  slug: string;
 }
 
 // export interface SearchBarProps {

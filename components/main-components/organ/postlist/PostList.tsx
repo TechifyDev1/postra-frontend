@@ -10,13 +10,12 @@ import Image from "next/image";
 import CommentButton from "../../tissue/comment-button/CommentButton";
 import LandingLargeText from '@/components/landing-page/cell/large-text/LargeText';
 import Link from "next/link";
-import CommentPopUp from "../comment-popup/CommentPopUp";
 
 const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, comments, time, slug, authorFullName, authorUsername }) => {
     return (
-        <Link className={style.PostList} href={`${authorUsername}/${slug}`} key={id}>
+        <div className={style.PostList} key={id}>
             <ProfileTag name={authorFullName ?? ''} />
-            <div className={style.top}>
+            <Link className={style.top} href={`${authorUsername}/${slug}`}>
                 <div className={style.left}>
                     <LargeText align="alignLeft" bold={true}>
                         {title}
@@ -26,18 +25,18 @@ const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, commen
                 <div className={style.right}>
                     {image && <Image src={image} alt={title} layout="responsive" className={style.image} width={800} height={400} />}
                 </div>
-            </div>
+            </Link>
             <div className={style.bottom}>
                 <div className={style.postDetails}>
                     <SmallText align="alignLeft" italic={true}>
                         {time}
                     </SmallText>
-                    <LikeButton count={likes} isLiked={false} slug={slug}/>
-                    <CommentButton count={comments} onClick={() => { }} />
+                    <LikeButton count={likes} isLiked={false} slug={slug} />
+
+                    <CommentButton count={comments} slug={slug} />
                 </div>
             </div>
-            <CommentPopUp />
-        </Link>
+        </div>
     )
 }
 

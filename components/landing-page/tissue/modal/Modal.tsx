@@ -20,7 +20,7 @@ const Modal: FC<ModalProps> = ({ children, show, onClose }) => {
     }
 
     return (shouldRender &&
-        <div className={`${style.Modal} ${show ? style.fadeIn : style.fadeOut}`} onAnimationEnd={handleAnimationEnd} style={{ display: shouldRender ? 'flex' : 'none' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); return onClose() }}>
+        <div className={`${style.Modal} ${show ? style.fadeIn : style.fadeOut}`} onAnimationEnd={handleAnimationEnd} style={{ display: shouldRender ? 'flex' : 'none' }} onClick={onClose }>
             {children}
         </div>
     )

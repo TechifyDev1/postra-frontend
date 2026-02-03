@@ -3,12 +3,12 @@ import style from "./CommentList.module.css";
 import ProfileTag from "../profile-tag/ProfileTag";
 import SmallText from "../../cell/small-text/SmallText";
 
-const CommentList: FC = () => {
+const CommentList: FC<{authorUsername: string, comment: string}> = ({authorUsername, comment}) => {
     return (
-        <div>
-            <ProfileTag name="Techify" />
+        <div className={style.commentList}>
+            <ProfileTag name={authorUsername} />
             <SmallText>
-                Some Comment
+                {comment}
             </SmallText>
         </div>
     )

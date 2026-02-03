@@ -119,11 +119,6 @@ const page: FC<{ params: { username: string; postSlug: string } }> = async ({
         </div>
       </section>
 
-      {/* Like section */}
-      <section className={styles.likeSection}>
-        <LikeButton isLiked={false} count={post.likeCount} slug={post.slug} />
-        <CommentButton count={post.commentCount | 0} slug={post.slug} />
-      </section>
 
       {/* Content Section */}
       <section className={styles.postContent}>
@@ -131,6 +126,11 @@ const page: FC<{ params: { username: string; postSlug: string } }> = async ({
           className={styles.content}
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
+      </section>
+      {/* Like section */}
+      <section className={styles.likeSection}>
+        <LikeButton isLiked={false} count={post.likeCount} slug={post.slug} />
+        <CommentButton count={post.commentCount | 0} slug={post.slug} />
       </section>
       <AuthorInfo post={post} />
     </div>

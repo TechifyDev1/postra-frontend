@@ -5,6 +5,9 @@ import { ToastProvider } from "@/contexts/ToastContext";
 import ToastContainer from "@/components/main-components/tissue/ToastContainer/ToastContainer";
 import { UserProvider } from "./providers/UserProvider";
 
+import { ShowCommentsProvider } from "./providers/ShowCommentsProvider";
+import { ModalProvider } from "@/contexts/ModalContext";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,12 +31,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <UserProvider>
-          <ToastProvider>
-            {children}
-            <ToastContainer />
-          </ToastProvider>
-        </UserProvider>
+        <ModalProvider>
+          <UserProvider>
+            <ToastProvider>
+              <ShowCommentsProvider>
+                {children}
+              </ShowCommentsProvider>
+              <ToastContainer />
+            </ToastProvider>
+          </UserProvider>
+        </ModalProvider>
       </body>
     </html>
   );

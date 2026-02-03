@@ -1,0 +1,6 @@
+.commentList {
+    border-bottom: 1px solid var(--button-border-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
