@@ -7,6 +7,8 @@ import { UserProvider } from "./providers/UserProvider";
 
 import { ShowCommentsProvider } from "./providers/ShowCommentsProvider";
 import { ModalProvider } from "@/contexts/ModalContext";
+import SignInPopUp from "@/components/landing-page/organ/popups/signin-popup/SignInPopUp";
+import SignUpPopUp from "@/components/landing-page/organ/popups/signup-popup/SignUpPopUp";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +38,8 @@ export default function RootLayout({
             <ToastProvider>
               <ShowCommentsProvider>
                 {children}
+                <SignInPopUp />
+                <SignUpPopUp />
               </ShowCommentsProvider>
               <ToastContainer />
             </ToastProvider>

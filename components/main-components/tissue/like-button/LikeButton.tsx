@@ -8,8 +8,6 @@ import { likeUrl } from "@/utils";
 import { useToast } from "@/contexts/ToastContext";
 import { useUserContext } from "@/hooks/use-user-context";
 import { ModalContext } from "@/contexts/ModalContext";
-import SignInPopUp from "@/components/landing-page/organ/popups/signin-popup/SignInPopUp";
-import SignUpPopUp from "@/components/landing-page/organ/popups/signup-popup/SignUpPopUp";
 
 const LikeButton: FC<LikeButtonProps> = ({ count, slug }) => {
   const [data, setData] = useState<boolean>(false);
@@ -21,11 +19,6 @@ const LikeButton: FC<LikeButtonProps> = ({ count, slug }) => {
 
   useEffect(() => {
     const checkIsLiked = async () => {
-      if (!user) {
-        showToast("You are not logged in, please login", "error");
-        openModal("login");
-        return;
-      }
       if (loading) return;
       setLoading(true);
       try {
@@ -110,8 +103,6 @@ const LikeButton: FC<LikeButtonProps> = ({ count, slug }) => {
         />
         <SmallText>{likeCounts}</SmallText>
       </button>
-      <SignInPopUp />
-      <SignUpPopUp />
     </>
   );
 };

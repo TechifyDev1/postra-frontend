@@ -2,7 +2,9 @@
     background-color: var(--nav-bg);
     color: var(--text-color-primary);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     padding: 0.5rem 1rem;
     cursor: pointer;
+    border: 1px solid var(--color-black);
+    height: fit-content;
 }

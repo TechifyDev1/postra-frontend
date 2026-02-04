@@ -12,6 +12,7 @@ import { cookies } from "next/headers";
 import PostList from "@/components/main-components/organ/postlist/PostList";
 import blogHero from "@/public/blog-hero.png";
 import Link from "next/link";
+import FollowButton from "@/components/main-components/tissue/follow-button/FollowButton";
 
 export async function generateMetadata({ params }: { params: { username: string } }): Promise<Metadata> {
     const cookieStore = cookies();
@@ -106,9 +107,7 @@ const page: FC<{ params: { username: string } }> = async ({ params }) => {
                 </div>
                 <div className={style.buttonContainer}>
                     {!user.currentUser && (
-                        <LargeButton>
-                            Follow
-                        </LargeButton>
+                        <FollowButton username={username} />
                     )}
                 </div>
             </div>

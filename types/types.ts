@@ -29,8 +29,7 @@ export interface ImageAvatarProps {
 }
 
 export interface FollowButtonProps {
-  isFollowing: boolean;
-  onClick: () => void;
+  username: string;
 }
 
 export interface LikeButtonProps {

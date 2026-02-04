@@ -1,3 +1,4 @@
+"use client"
 import Modal from "@/components/landing-page/tissue/modal/Modal";
 import { X } from "phosphor-react";
 import style from "./SignInPopUp.module.css";

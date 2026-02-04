@@ -12,5 +12,7 @@ export const getApost = (username: string, slug: string) => `${baseurl}/posts/${
 export const likeUrl = (slug: string) => `${baseurl}/like/${slug}`;
 export const addCommentUrl = (postSlug: string) => `${baseurl}/comments/add/${postSlug}`;
 export const getCommentsUrl = (postSlug: string) => `${baseurl}/comments/${postSlug}`
+export const followUrl = (targetUsername: string) => `${baseurl}/follow/${targetUsername}`;
+export const checkFollowUrl = (targetUsername: string) => `${baseurl}/follow/is-following/${targetUsername}`;
 
 export const frontendBaseUrl = "http://localhost:3000";

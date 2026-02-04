@@ -1,15 +1,16 @@
-import React, { FC, ReactNode } from "react";
-import style from "./MediumButton.module.css";
+import { CSSProperties, FC, ReactNode } from "react";
+import styles from "./MediumButton.module.css";
 
 interface MediumButtonProps {
   children: ReactNode;
   onClick?: () => void;
   type?: "submit" | "reset" | "button" | undefined
+  style?: CSSProperties
 }
 
-const MediumButton: FC<MediumButtonProps> = ({ children, onClick, type }) => {
+const MediumButton: FC<MediumButtonProps> = ({ children, onClick, type, style }) => {
   return (
-    <button className={style.MediumButton} onClick={onClick} type={type}>
+    <button className={styles.MediumButton} onClick={onClick} type={type} style={style}>
       {children}
     </button>
   );
