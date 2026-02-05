@@ -1,5 +1,5 @@
 'use client';
-import { MouseEvent } from "react";
+import { MouseEvent, useEffect } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
@@ -9,12 +9,14 @@ import style from "./PostEditor.module.css";
 import Image from "@tiptap/extension-image";
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node";
 import LargeButton from "@/components/landing-page/cell/large-button/LargeButton";
-import { deleteUrl, publishPostUrl, uploadUrl } from "@/utils";
+import { deleteUrl, getApost, publishPostUrl, updatePostUrl, uploadUrl } from "@/utils";
 import { useToast } from "@/contexts/ToastContext";
+import { notFound, useParams } from "next/navigation";
+import { useUserContext } from "@/hooks/use-user-context";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
-const PostEditor: FC = () => {
+const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
   const imgInpRef = useRef<HTMLInputElement>(null);
   const [bold, setBold] = useState(false);
   const [italic, setItalic] = useState(false);
@@ -27,8 +29,63 @@ const PostEditor: FC = () => {
   const [postBannerId, setPostBannerId] = useState("");
   const { showToast } = useToast();
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const params = useParams();
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const postSlug = params.postSlug as string;
+  const username = params.username as string;
+  const { user, isLoading } = useUserContext();
+
+  useEffect(() => {
+    if (edit && postSlug) {
+      if (isLoading) return;
+      if (!user) return notFound();
+      fetchPost();
+    }
+  }, [edit, postSlug, user, isLoading])
+  const fetchPost = async () => {
+    if (loading) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch(getApost(username, postSlug), {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include"
+      });
+      if (!res.ok) {
+        throw new Error("Could not find this post.")
+      }
+      const post = await res.json();
+      console.log(post);
+      if (post.authorUsername !== user?.username) throw new Error("You cannot edit this post, you are not the owner");
+      setTitle(post.title);
+      setSubtitle(post.subTitle);
+      setPostBannerUrl(post.postBanner);
+      editor?.commands.setContent(post.content);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+        setError(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <p>{error}</p>
+        <button onClick={fetchPost}>Try Again</button>
+        <button onClick={() => window.history.back()}>Go Back</button>
+      </div>
+    );
+  }
+
   const handleImageUpload: () => Promise<string> = async () => {
-    console.log("Image Uploading...");
     return new Promise((resolve, reject) => {
       if (imgInpRef.current == null) return reject("No input Found");
       imgInpRef.current.click();
@@ -39,7 +96,10 @@ const PostEditor: FC = () => {
 
         const formData = new FormData();
         const file = target.files[0];
-        if (file.size > MAX_FILE_SIZE) return reject("File size exceeds limit");
+        if (file.size > MAX_FILE_SIZE) {
+          showToast("File size exceeds 5mb", "error");
+          return reject("File size exceeds 5mb")
+        }
 
         formData.append("file", file);
 
@@ -64,6 +124,7 @@ const PostEditor: FC = () => {
 
           return resolve(data.url);
         } catch (err) {
+          showToast("Unable to upload an image, please try again");
           return reject("Upload error: " + err);
         }
       };
@@ -211,8 +272,9 @@ const PostEditor: FC = () => {
     try {
       if (editor.isEmpty) throw new Error("Cannot publish empty post");
       if (title.trim().length === 0) throw new Error("Title cannot be empty");
-      const res = await fetch(publishPostUrl, {
-        method: "POST",
+
+      const res = await fetch(edit ? updatePostUrl(postSlug) : publishPostUrl, {
+        method: edit ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -227,19 +289,18 @@ const PostEditor: FC = () => {
       if (!res.ok) {
         const errorMessage = await res.text();
         console.log("Error: ", errorMessage);
-        throw new Error("Failed to publish post");
+        throw new Error(edit ? "Failed to update post" : "Failed to publish post");
       } else {
-        console.log("Post Published Successfully");
-        editor.commands.clearContent();
-        showToast("Post Published Successfully", "success");
-        setTitle("");
-        setSubtitle("");
-        setPostBannerUrl("");
-        setPostBannerId("");
-
+        console.log(edit ? "Post Updated Successfully" : "Post Published Successfully");
+        if (!edit) {
+          editor.commands.clearContent();
+          setTitle("");
+          setSubtitle("");
+          setPostBannerUrl("");
+          setPostBannerId("");
+        }
+        showToast(edit ? "Post Updated Successfully" : "Post Published Successfully", "success");
       }
-      setTitle("");
-      setSubtitle("");
     } catch (err) {
       if (err instanceof Error) {
         console.log("Error: ", err.message);
@@ -304,7 +365,7 @@ const PostEditor: FC = () => {
       </BubbleMenu>
 
       <LargeButton style={{ marginTop: '20px', alignSelf: 'flex-end' }} onClick={handlePublish} disabled={isPublishing} isLoading={isPublishing}>
-        <span>Publish</span>
+        <span>{edit ? "Update" : "Publish"}</span>
       </LargeButton>
     </div>
   );

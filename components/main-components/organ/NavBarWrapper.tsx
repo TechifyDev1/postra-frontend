@@ -5,7 +5,8 @@ import { useUserContext } from "@/hooks/use-user-context";
 import NavBar from "./navbar/NavBar";
 
 const NavBarWrapper = () => {
-    const { user } = useUserContext();
+    const { user, isLoading } = useUserContext();
+    if(isLoading) return;
     if (!user) {
         return <NNavBar />
     }

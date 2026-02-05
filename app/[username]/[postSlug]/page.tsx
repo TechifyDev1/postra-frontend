@@ -1,4 +1,3 @@
-import NavBar from "@/components/main-components/organ/navbar/NavBar";
 import { getApost } from "@/utils";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
@@ -9,6 +8,7 @@ import LikeButton from "@/components/main-components/tissue/like-button/LikeButt
 import CommentButton from "@/components/main-components/tissue/comment-button/CommentButton";
 import AuthorInfo from "@/components/main-components/tissue/authorInfo/AuthorInfo";
 import NavBarWrapper from "@/components/main-components/organ/NavBarWrapper";
+import EditButton from "@/components/main-components/tissue/edit-button/EditButton";
 
 export async function generateMetadata({
   params,
@@ -121,6 +121,7 @@ const page: FC<{ params: { username: string; postSlug: string } }> = async ({
       <section className={styles.likeSection}>
         <LikeButton isLiked={false} count={post.likeCount} slug={post.slug} />
         <CommentButton count={post.commentCount | 0} slug={post.slug} />
+        <EditButton username={post.authorUsername} slug={post.slug} />
       </section>
       <AuthorInfo post={post} />
     </div>

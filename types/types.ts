@@ -26,6 +26,7 @@ export interface ImageAvatarProps {
   src: StaticImageData | string;
   alt?: string;
   size?: "small" | "medium" | "large";
+  username: string;
 }
 
 export interface FollowButtonProps {

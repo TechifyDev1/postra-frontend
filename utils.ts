@@ -4,6 +4,8 @@ export const loginUrl = `${baseurl}/users/login`;
 export const getUserUrl = (username: string): string => `${baseurl}/users/profile/${username}`;
 export const getUserPostsUrl = (username: string, page: number, size: number) => `${baseurl}/posts/user/${username}?page=${page}&size=${size}`;
 export const publishPostUrl = `${baseurl}/posts/create`;
+export const updatePostUrl = (slug: string) => `${baseurl}/posts/update/${slug}`;
+export const deletePostUrl = (slug: string) => `${baseurl}/posts/delete/${slug}`;
 export const uploadUrl = `${baseurl}/upload`;
 export const deleteUrl = (publicId: string) => `${baseurl}/delete?publicId=${publicId}`;
 export const getPosts = (page: number, size: number) => `${baseurl}/posts/?page=${page}&size=${size}`;

@@ -7,6 +7,8 @@ import { ReactNode, useEffect, useState } from "react";
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<userInterface | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
         const fetchMe = async () => {
             try {
@@ -20,12 +22,15 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 console.log(data)
             } catch (error) {
                 setUser(null);
+            } finally {
+                setIsLoading(false);
             }
         }
         fetchMe();
     }, []);
+
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider value={{ user, setUser, isLoading }}>
             {children}
         </UserContext.Provider>
     )

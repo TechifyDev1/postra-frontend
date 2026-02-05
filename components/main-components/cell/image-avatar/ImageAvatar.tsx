@@ -1,10 +1,15 @@
 import { ImageAvatarProps } from '@/types/types';
 import style from './ImageAvatar.module.css';
 import Image from "next/image";
+import { useRouter } from 'next/navigation';
 
-const ImageAvatar = ({ src, alt, size = 'medium' }: ImageAvatarProps) => {
+const ImageAvatar = ({ src, alt, size = 'medium', username }: ImageAvatarProps) => {
+    const {push} = useRouter();
+    const handleClick = () => {
+        push(`/${username}`)
+    }
     return (
-        <div className={`${style.ImageAvatar} ${style[size]}`}>
+        <div className={`${style.ImageAvatar} ${style[size]}`} onClick={handleClick}>
             <Image
                 src={src}
                 alt={alt ?? 'Avatar'}

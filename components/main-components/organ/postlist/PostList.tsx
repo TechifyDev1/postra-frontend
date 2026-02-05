@@ -11,11 +11,16 @@ import CommentButton from "../../tissue/comment-button/CommentButton";
 import LandingLargeText from '@/components/landing-page/cell/large-text/LargeText';
 import Link from "next/link";
 import { getRelativeTime } from "@/utils";
+import { useUserContext } from "@/hooks/use-user-context";
+import EditButton from "../../tissue/edit-button/EditButton";
+import DeleteButton from "../../tissue/delete-button/DeleteButton";
 
 const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, comments, time, slug, authorFullName, authorUsername }) => {
+    const { user } = useUserContext();
+    const isAuthor = user?.username! === authorUsername;
     return (
         <div className={style.PostList} key={id}>
-            <ProfileTag name={authorFullName ?? ''} />
+            <ProfileTag name={authorFullName ?? ''} username={authorUsername} />
             <Link className={style.top} href={`${authorUsername}/${slug}`}>
                 <div className={style.left}>
                     <LargeText align="alignLeft" bold={true}>
@@ -35,6 +40,8 @@ const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, commen
                     <LikeButton count={likes} isLiked={false} slug={slug} />
 
                     <CommentButton count={comments} slug={slug} />
+                    {isAuthor && <EditButton slug={slug} username={authorUsername} />}
+                    {isAuthor && <DeleteButton slug={slug} username={authorUsername}/>}
                 </div>
             </div>
         </div>

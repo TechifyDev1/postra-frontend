@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: { params: { username: string 
     }
     const userData = await res.json();
     const user = await userData.data;
-    console.log(user);
+    console.log("User data", userData);
 
 
     return {
@@ -52,6 +52,8 @@ export async function generateMetadata({ params }: { params: { username: string 
         }
     }
 }
+
+import ProfilePosts from "@/components/main-components/organ/ProfilePosts/ProfilePosts";
 
 const page: FC<{ params: { username: string } }> = async ({ params }) => {
     const cookieStore = cookies();
@@ -73,10 +75,6 @@ const page: FC<{ params: { username: string } }> = async ({ params }) => {
     const user = data.data;
 
     if (!user) return notFound();
-
-    const postsRes = await fetch(getUserPostsUrl(username, 0, 10), options);
-    const postsData = await postsRes.json();
-    const posts = postsData.content || [];
 
     return (
         <div className={style.page}>
@@ -115,38 +113,7 @@ const page: FC<{ params: { username: string } }> = async ({ params }) => {
                     <XlargeText align="alignLeft">Posts</XlargeText>
                 </div>
 
-                <div className={style.postsContainer}>
-                    {posts.length > 0 ? (
-                        posts.map((post: any) => (
-                            <PostList
-                                key={post.id}
-                                id={post.id}
-                                title={truncate(post.title, 60)}
-                                subtitle={truncate(post.subTitle, 100)}
-                                image={post.postBanner ?? blogHero}
-                                likes={post.likeCount}
-                                comments={post.commentCount}
-                                time="Recently"
-                                slug={post.slug}
-                                authorFullName={post.authorFullName}
-                                authorUsername={post.username}
-                            />
-                        ))
-                    ) : (
-                        <div style={{ textAlign: "center", padding: "4rem 0" }}>
-                            <LargeText align="center">
-                                {user.currentUser
-                                    ? "You currently have no posts"
-                                    : "This user currently doesn't have posts"}
-                            </LargeText>
-                            {user.currentUser && (
-                                <Link href="/new" style={{ marginTop: "1rem", display: "inline-block" }}>
-                                    <LargeButton>Create Post</LargeButton>
-                                </Link>
-                            )}
-                        </div>
-                    )}
-                </div>
+                <ProfilePosts username={username} isCurrentUser={user.currentUser} />
             </div>
         </div>
     );

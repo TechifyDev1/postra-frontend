@@ -6,4 +6,10 @@
     font-weight: 500;
     background-color: var(--button-bg-primary);
     transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.MediumButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }

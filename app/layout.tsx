@@ -4,11 +4,13 @@ import "./globals.css";
 import { ToastProvider } from "@/contexts/ToastContext";
 import ToastContainer from "@/components/main-components/tissue/ToastContainer/ToastContainer";
 import { UserProvider } from "../providers/UserProvider";
+import { PostsProvider } from "../providers/PostsProvider";
 
 import { ShowCommentsProvider } from "../providers/ShowCommentsProvider";
 import { ModalProvider } from "@/contexts/ModalContext";
 import SignInPopUp from "@/components/landing-page/organ/popups/signin-popup/SignInPopUp";
 import SignUpPopUp from "@/components/landing-page/organ/popups/signup-popup/SignUpPopUp";
+import ConfirmDeletePopUp from "@/components/main-components/organ/popups/confirm-delete-popup/ConfirmDeletePopUp";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,14 +37,17 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ModalProvider>
           <UserProvider>
-            <ToastProvider>
-              <ShowCommentsProvider>
-                {children}
-                <SignInPopUp />
-                <SignUpPopUp />
-              </ShowCommentsProvider>
-              <ToastContainer />
-            </ToastProvider>
+            <PostsProvider>
+              <ToastProvider>
+                <ShowCommentsProvider>
+                  {children}
+                  <SignInPopUp />
+                  <SignUpPopUp />
+                  <ConfirmDeletePopUp />
+                </ShowCommentsProvider>
+                <ToastContainer />
+              </ToastProvider>
+            </PostsProvider>
           </UserProvider>
         </ModalProvider>
       </body>

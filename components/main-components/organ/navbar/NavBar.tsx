@@ -8,8 +8,10 @@ import ImageAvatar from '../../cell/image-avatar/ImageAvatar';
 import avatar from '../../../../public/default.jpg';
 import SmallText from '../../cell/small-text/SmallText';
 import Link from 'next/link';
+import { useUserContext } from '@/hooks/use-user-context';
 
 const NavBar: FC = () => {
+    const {user} = useUserContext()
     return (
         <nav className={style.NavBar}>
             <div className={style.left}>
@@ -24,7 +26,7 @@ const NavBar: FC = () => {
                     </div>
                 </Link>
                 <Bell size={24} className={style.notificationIcon} weight='thin' />
-                <ImageAvatar src={avatar} alt="User Avatar" size="medium" />
+                <ImageAvatar src={avatar} alt="User Avatar" size="medium" username={user?.username!} />
             </div>
         </nav>
     )

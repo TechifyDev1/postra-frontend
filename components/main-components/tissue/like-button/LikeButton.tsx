@@ -46,7 +46,7 @@ const LikeButton: FC<LikeButtonProps> = ({ count, slug }) => {
     };
     checkIsLiked();
     setLikeCounts(count);
-  }, [slug]);
+  }, [slug, user]);
   const handleLike: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
     e.stopPropagation();

@@ -3,6 +3,7 @@ import HeroSection from "@/components/landing-page/organ/hero-section/HeroSectio
 import NavBar from "@/components/landing-page/organ/navbar/NavBar";
 import UUserHomePage from "./u-user-homepage/UUserHomePage";
 import { getUserUrl } from "@/utils";
+import NavBarWrapper from "./NavBarWrapper";
 
 export default async function HomePageWrapper() {
     try {
@@ -14,12 +15,12 @@ export default async function HomePageWrapper() {
 
         if (!response.ok) {
             return (
-            <>
-                <NavBar />
-                <HeroSection />
-                <Footer />
-            </>
-        );
+                <>
+                    <NavBarWrapper />
+                    <HeroSection />
+                    <Footer />
+                </>
+            );
         };
 
         return <UUserHomePage />;
@@ -27,7 +28,7 @@ export default async function HomePageWrapper() {
         // Fallback to landing page UI if fetch fails
         return (
             <>
-                <NavBar />
+                <NavBarWrapper />
                 <HeroSection />
                 <Footer />
             </>
