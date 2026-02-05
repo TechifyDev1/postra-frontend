@@ -6,13 +6,13 @@ import style from './page.module.css'
 import NavBar from "@/components/main-components/organ/navbar/NavBar";
 import XlargeText from "@/components/landing-page/cell/xlarge-text/XlargeText";
 import LargeText from "@/components/landing-page/cell/large-text/LargeText";
-import SmallText from "@/components/main-components/cell/small-text/SmallText";
 import LargeButton from "@/components/landing-page/cell/large-button/LargeButton";
 import { cookies } from "next/headers";
 import PostList from "@/components/main-components/organ/postlist/PostList";
 import blogHero from "@/public/blog-hero.png";
 import Link from "next/link";
 import FollowButton from "@/components/main-components/tissue/follow-button/FollowButton";
+import ProfileCounts from "@/components/main-components/profile-counts/ProfileCounts";
 
 export async function generateMetadata({ params }: { params: { username: string } }): Promise<Metadata> {
     const cookieStore = cookies();
@@ -96,9 +96,7 @@ const page: FC<{ params: { username: string } }> = async ({ params }) => {
                     <LargeText align="left">
                         {user.bio || "No bio available."}
                     </LargeText>
-                    <SmallText align="alignLeft">
-                        Followers: {user.numOfFollowers || 0} | Following: {user.numOfFollowing || 0} | Posts: {user.postsCount || 0}
-                    </SmallText>
+                    <ProfileCounts />
                     {user.currentUser && (
                         <LargeButton style={{ marginTop: "1rem" }}>
                             Edit

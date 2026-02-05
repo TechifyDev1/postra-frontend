@@ -16,3 +16,14 @@ export const followUrl = (targetUsername: string) => `${baseurl}/follow/${target
 export const checkFollowUrl = (targetUsername: string) => `${baseurl}/follow/is-following/${targetUsername}`;
 
 export const frontendBaseUrl = "http://localhost:3000";
+
+export const getRelativeTime = (isoString: string) => {
+    const date = new Date(isoString);
+    const now = new Date();
+    const diffInSecs = Math.round((date.getTime() - now.getTime()) / 1000);
+    const formatter = new Intl.RelativeTimeFormat('en', { numeric: "auto" });
+    if (Math.abs(diffInSecs) < 60) return formatter.format(diffInSecs, 'second');
+    if (Math.abs(diffInSecs) < 3600) return formatter.format(Math.round(diffInSecs / 60), 'minute');
+    if (Math.abs(diffInSecs) < 86400) return formatter.format(Math.round(diffInSecs / 3600), 'hour');
+    return formatter.format(Math.round(diffInSecs / 86400), 'day');
+}

@@ -31,7 +31,11 @@ const LikeButton: FC<LikeButtonProps> = ({ count, slug }) => {
         });
         const result = await res.json();
         console.log("result", result);
-        setData(result);
+        if(typeof result == "boolean") {
+          setData(result);
+        } else {
+          setData(false)
+        }
       } catch (error) {
         if (error instanceof Error) {
           console.log(error.message);

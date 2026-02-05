@@ -7,13 +7,15 @@ import { useUserContext } from '@/hooks/use-user-context';
 import { checkFollowUrl, followUrl } from '@/utils';
 import { ModalContext } from '@/contexts/ModalContext';
 import { useToast } from '@/contexts/ToastContext';
+import { UseProfileCounts } from '@/hooks/useProfileCounts';
 
 const FollowButton: FC<FollowButtonProps> = ({ username }) => {
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const {user} = useUserContext();
-    const {openModal} = useContext(ModalContext);
-    const {showToast} = useToast();
+    const { user } = useUserContext();
+    const { openModal } = useContext(ModalContext);
+    const { showToast } = useToast();
+    const {refetchProfile} = UseProfileCounts();
     const getIsFollowing = async () => {
         try {
             const res = await fetch(checkFollowUrl(username), {
@@ -26,8 +28,9 @@ const FollowButton: FC<FollowButtonProps> = ({ username }) => {
             const data = await res.json();
             console.log(data);
             setIsFollowing(data.data);
+            refetchProfile();
         } catch (error) {
-            if(error instanceof Error) {
+            if (error instanceof Error) {
                 console.log(error.message);
                 setIsFollowing(false);
             }
@@ -35,10 +38,11 @@ const FollowButton: FC<FollowButtonProps> = ({ username }) => {
         }
     }
     const followOrUnfollow = async () => {
-        if(loading) return;
+        if (loading) return;
         if (!user) {
             showToast("Please login to follow", "error")
             openModal("login");
+            return;
         }
         setLoading(true)
         try {
@@ -54,7 +58,7 @@ const FollowButton: FC<FollowButtonProps> = ({ username }) => {
             showToast(message, "success");
             await getIsFollowing();
         } catch (error) {
-            if(error instanceof Error) {
+            if (error instanceof Error) {
                 console.error(error.message);
                 showToast(error.message);
             }

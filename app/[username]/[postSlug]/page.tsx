@@ -5,10 +5,10 @@ import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { FC } from "react";
 import styles from "./page.module.css";
-import MediumButton from "@/components/landing-page/cell/medium-button/MediumButton";
 import LikeButton from "@/components/main-components/tissue/like-button/LikeButton";
 import CommentButton from "@/components/main-components/tissue/comment-button/CommentButton";
 import AuthorInfo from "@/components/main-components/tissue/authorInfo/AuthorInfo";
+import NavBarWrapper from "@/components/main-components/organ/NavBarWrapper";
 
 export async function generateMetadata({
   params,
@@ -16,16 +16,6 @@ export async function generateMetadata({
   params: { username: string; postSlug: string };
 }): Promise<Metadata> {
   const { username, postSlug } = await params;
-  // const cookieStore = cookies();
-  // const tokenCookie = (await cookieStore).get("token");
-  // const options = {
-  //   method: "GET",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   credentials: "include",
-  // };
-  // console.log(options);
 
   const res = await fetch(getApost(username, postSlug), {
     method: "GET",
@@ -104,7 +94,7 @@ const page: FC<{ params: { username: string; postSlug: string } }> = async ({
   console.log(post)
   return (
     <div className={styles.postPage}>
-      <NavBar />
+      <NavBarWrapper />
 
       {/* Hero / Banner Section */}
       <section className={styles.hero}>

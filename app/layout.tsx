@@ -3,9 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/contexts/ToastContext";
 import ToastContainer from "@/components/main-components/tissue/ToastContainer/ToastContainer";
-import { UserProvider } from "./providers/UserProvider";
+import { UserProvider } from "../providers/UserProvider";
 
-import { ShowCommentsProvider } from "./providers/ShowCommentsProvider";
+import { ShowCommentsProvider } from "../providers/ShowCommentsProvider";
 import { ModalProvider } from "@/contexts/ModalContext";
 import SignInPopUp from "@/components/landing-page/organ/popups/signin-popup/SignInPopUp";
 import SignUpPopUp from "@/components/landing-page/organ/popups/signup-popup/SignUpPopUp";

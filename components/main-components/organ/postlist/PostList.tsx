@@ -10,6 +10,7 @@ import Image from "next/image";
 import CommentButton from "../../tissue/comment-button/CommentButton";
 import LandingLargeText from '@/components/landing-page/cell/large-text/LargeText';
 import Link from "next/link";
+import { getRelativeTime } from "@/utils";
 
 const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, comments, time, slug, authorFullName, authorUsername }) => {
     return (
@@ -29,7 +30,7 @@ const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, commen
             <div className={style.bottom}>
                 <div className={style.postDetails}>
                     <SmallText align="alignLeft" italic={true}>
-                        {time}
+                        <time suppressHydrationWarning>{getRelativeTime(time)}</time>
                     </SmallText>
                     <LikeButton count={likes} isLiked={false} slug={slug} />
 

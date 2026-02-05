@@ -5,14 +5,14 @@ import { userInterface } from "@/types/userType";
 import { getUserUrl } from "@/utils";
 import { ReactNode, useEffect, useState } from "react";
 
-export const UserProvider = ({children}: {children: ReactNode}) => {
+export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<userInterface | null>(null);
     useEffect(() => {
         const fetchMe = async () => {
             try {
                 const res = await fetch(getUserUrl("me"), {
                     method: "GET",
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     credentials: 'include'
                 });
                 const data = await res.json();
@@ -25,7 +25,7 @@ export const UserProvider = ({children}: {children: ReactNode}) => {
         fetchMe();
     }, []);
     return (
-        <UserContext.Provider value={{user, setUser}}>
+        <UserContext.Provider value={{ user, setUser }}>
             {children}
         </UserContext.Provider>
     )

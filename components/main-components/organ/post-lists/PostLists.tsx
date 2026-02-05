@@ -17,6 +17,7 @@ interface postInterface {
   username: string;
   likeCount: number;
   commentCount: number;
+  createdAt: string;
 }
 
 const PostLists: FC = async () => {
@@ -49,7 +50,7 @@ const PostLists: FC = async () => {
               image={post.postBanner ?? blogHero}
               likes={post.likeCount}
               comments={post.commentCount}
-              time="2 hours ago"
+              time={post.createdAt}
               key={post.id}
               slug={post.slug}
               authorFullName={post.authorFullName}
