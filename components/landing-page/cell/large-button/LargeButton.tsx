@@ -15,7 +15,7 @@ interface LargeButtonProps {
 
 const LargeButton: React.FC<LargeButtonProps> = ({ children, onClick, type, disabled, isLoading, className, style }) => {
     return (
-        <button className={styles.LargeButton+ " " + className} onClick={onClick} type={type} disabled={disabled || isLoading} style={style}>
+        <button className={`${styles.LargeButton} ${className || ''}`} onClick={onClick} type={type} disabled={disabled || isLoading} style={style}>
             {isLoading ? <Loader /> : <>{children}</>}
         </button>
     );

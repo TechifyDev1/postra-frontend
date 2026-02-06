@@ -12,6 +12,7 @@ import SmallText from "@/components/landing-page/cell/small-text/SmallText";
 import { useToast } from "@/contexts/ToastContext";
 import { loginUrl } from "@/utils";
 import { useUserContext } from "@/hooks/use-user-context";
+import { useRouter } from "next/navigation";
 
 const SignInPopUp = () => {
     const { closeModal, modals, openModal } = useContext(ModalContext);
@@ -19,7 +20,8 @@ const SignInPopUp = () => {
     const [password, setPassword] = useState<string>("");
     const [username, setUsername] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const {setUser} = useUserContext();
+    const router = useRouter();
+    const { setUser } = useUserContext();
     const { showToast } = useToast();
     const handleUsernameOrEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -62,11 +64,14 @@ const SignInPopUp = () => {
             const data = await res.json();
             console.log(data);
             showToast(data.message, "success");
-            if(data.data != null) {
+            if (data.data != null) {
                 setUser(data.data);
             }
-            closeModal('login');
             setIsLoading(false);
+            closeModal('login');
+            setTimeout(() => {
+                router.refresh();
+            }, 100);
         } catch (error) {
             showToast("Login failed, please try again", "error");
             console.log(error)

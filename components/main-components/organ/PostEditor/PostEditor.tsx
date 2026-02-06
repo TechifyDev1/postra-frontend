@@ -9,7 +9,7 @@ import style from "./PostEditor.module.css";
 import Image from "@tiptap/extension-image";
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node";
 import LargeButton from "@/components/landing-page/cell/large-button/LargeButton";
-import { deleteUrl, getApost, publishPostUrl, updatePostUrl, uploadUrl } from "@/utils";
+import { deleteUrl, getApost, publishPostUrl, signUrl, updatePostUrl, uploadUrl } from "@/utils";
 import { useToast } from "@/contexts/ToastContext";
 import { notFound, useParams } from "next/navigation";
 import { useUserContext } from "@/hooks/use-user-context";
@@ -27,6 +27,7 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
   const [postBannerUrl, setPostBannerUrl] = useState<String>("");
   const bannerImgRef = useRef<HTMLImageElement>(null);
   const [postBannerId, setPostBannerId] = useState("");
+  const [initialContent, setInitialContent] = useState(null);
   const { showToast } = useToast();
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const params = useParams();
@@ -36,14 +37,8 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
   const username = params.username as string;
   const { user, isLoading } = useUserContext();
 
-  useEffect(() => {
-    if (edit && postSlug) {
-      if (isLoading) return;
-      if (!user) return notFound();
-      fetchPost();
-    }
-  }, [edit, postSlug, user, isLoading])
-  const fetchPost = async () => {
+
+  async function fetchPost() {
     if (loading) return;
     setLoading(true);
     setError(null);
@@ -56,7 +51,7 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
         credentials: "include"
       });
       if (!res.ok) {
-        throw new Error("Could not find this post.")
+        throw new Error("Could not find this post.");
       }
       const post = await res.json();
       console.log(post);
@@ -64,7 +59,7 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
       setTitle(post.title);
       setSubtitle(post.subTitle);
       setPostBannerUrl(post.postBanner);
-      editor?.commands.setContent(post.content);
+      setInitialContent(post.content);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -86,6 +81,8 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
   }
 
   const handleImageUpload: () => Promise<string> = async () => {
+    const timestamp = Math.round(new Date().getTime() / 1000);
+    const paramsToSign = { timestamp };
     return new Promise((resolve, reject) => {
       if (imgInpRef.current == null) return reject("No input Found");
       imgInpRef.current.click();
@@ -101,13 +98,33 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
           return reject("File size exceeds 5mb")
         }
 
+        const signRef = await fetch(signUrl(), {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "include",
+          body: JSON.stringify(paramsToSign)
+        })
+
+        if (!signRef.ok) {
+          console.error("Unable to genenerate signed url");
+          return reject("Upload failed")
+        }
+
+        const response = await signRef.json();
+        const data = response.data;
+        const {signature} = data;
+
         formData.append("file", file);
+        formData.append("api_key", "544934933231257");
+        formData.append("timestamp", timestamp.toString());
+        formData.append("signature", signature)
 
         try {
-          const res = await fetch(uploadUrl, {
+          const res = await fetch("https://api.cloudinary.com/v1_1/dvpkp0u9u/image/upload", {
             method: "POST",
             body: formData,
-            credentials: "include" as RequestCredentials,
           });
 
           if (!res.ok) {
@@ -122,7 +139,7 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
           // Reset input so the same file can be chosen again
           imgInpRef.current!.value = "";
 
-          return resolve(data.url);
+          return resolve(data.secure_url);
         } catch (err) {
           showToast("Unable to upload an image, please try again");
           return reject("Upload error: " + err);
@@ -133,9 +150,10 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
 
   const handleBannerUpload: () => Promise<void> = async () => {
     if (bannerImgRef.current !== null) {
-      // console.error("Post Banner Ref is null");
       return;
     }
+    const timestamp = Math.round(new Date().getTime() / 1000);
+    const paramsToSign = { timestamp };
     console.log("Uploading Banner...");
     return new Promise((resolve, reject) => {
       if (imgInpRef.current == null) return reject("No Post Banner input found");
@@ -146,12 +164,32 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
         const formData = new FormData();
         const file = target.files[0];
         if (file.size > MAX_FILE_SIZE) return reject();
+        const signRef = await fetch(signUrl(), {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "include",
+          body: JSON.stringify(paramsToSign)
+        })
+
+        if (!signRef.ok) {
+          console.error("Unable to genenerate signed url");
+          return reject("Upload failed")
+        }
+        const response = await signRef.json();
+        const data = response.data;
+        const {signature} = data;
+        console.log(response);
+        console.log("Response for signature:", signature)
         formData.append("file", file);
+        formData.append("api_key", "544934933231257");
+        formData.append("timestamp", timestamp.toString());
+        formData.append("signature", signature)
         try {
-          const res = await fetch(uploadUrl, {
+          const res = await fetch("https://api.cloudinary.com/v1_1/dvpkp0u9u/image/upload", {
             method: "POST",
             body: formData,
-            credentials: "include" as RequestCredentials,
           });
           if (!res.ok) {
             const errorMessage = await res.text();
@@ -265,6 +303,20 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
       },
     },
   });
+
+  useEffect(() => {
+    if (edit && postSlug) {
+      if (isLoading) return;
+      if (!user) return notFound();
+      fetchPost();
+    }
+  }, [edit, postSlug, user, isLoading])
+
+  useEffect(() => {
+    if (editor && initialContent && edit) {
+      editor.commands.setContent(initialContent);
+    }
+  }, [editor, initialContent, edit]);
 
   if (!editor) return null;
   const handlePublish = async () => {

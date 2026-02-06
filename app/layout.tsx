@@ -4,7 +4,6 @@ import "./globals.css";
 import { ToastProvider } from "@/contexts/ToastContext";
 import ToastContainer from "@/components/main-components/tissue/ToastContainer/ToastContainer";
 import { UserProvider } from "../providers/UserProvider";
-import { PostsProvider } from "../providers/PostsProvider";
 
 import { ShowCommentsProvider } from "../providers/ShowCommentsProvider";
 import { ModalProvider } from "@/contexts/ModalContext";
@@ -37,7 +36,6 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ModalProvider>
           <UserProvider>
-            <PostsProvider>
               <ToastProvider>
                 <ShowCommentsProvider>
                   {children}
@@ -47,7 +45,6 @@ export default function RootLayout({
                 </ShowCommentsProvider>
                 <ToastContainer />
               </ToastProvider>
-            </PostsProvider>
           </UserProvider>
         </ModalProvider>
       </body>

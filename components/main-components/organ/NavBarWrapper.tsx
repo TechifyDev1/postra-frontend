@@ -1,16 +1,29 @@
-"use client";
-
 import NNavBar from "@/components/landing-page/organ/navbar/NavBar";
-import { useUserContext } from "@/hooks/use-user-context";
 import NavBar from "./navbar/NavBar";
+import { cookies } from "next/headers";
+import { getUserUrl } from "@/utils";
 
-const NavBarWrapper = () => {
-    const { user, isLoading } = useUserContext();
-    if(isLoading) return;
-    if (!user) {
+const NavBarWrapper = async () => {
+    const cookieStore = cookies();
+    const token = (await cookieStore).get("token")?.value;
+    try {
+        const response = await fetch(getUserUrl("me"), {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${token}`
+            },
+            next: { revalidate: 0 },
+            cache: "no-store"
+        });
+        if (!response.ok) {
+            return <NNavBar />
+        }
+        return <NavBar />
+    } catch (error) {
+        console.error(error instanceof Error ? error.message : error);
         return <NNavBar />
     }
-    return <NavBar />
 }
 
 export default NavBarWrapper;

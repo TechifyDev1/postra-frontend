@@ -1,9 +1,11 @@
+"use client"
 import XxLargeText from '@/components/landing-page/cell/xxlarge-text/XxLargeText'
 import style from './HeroSection.module.css'
 import LargeText from '@/components/landing-page/cell/large-text/LargeText';
 import Image from "next/image";
 import blogHero from '@/public/blog-hero.png'
 import LargeButton from '@/components/landing-page/cell/large-button/LargeButton';
+import { redirect } from 'next/navigation';
 
 const HeroSection: React.FC = () => {
     return (
@@ -11,7 +13,7 @@ const HeroSection: React.FC = () => {
             <div className={style.rightContainer}>
                 <XxLargeText>Write. Share. Inspire.</XxLargeText>
                 <LargeText>Welcome to <b>Postra</b>—where thoughts become stories. Dive into tutorials, reflections, and more.</LargeText>
-                <LargeButton>
+                <LargeButton onClick={() => { redirect("/home") }}>
                     <LargeText>Start Reading</LargeText>
                 </LargeButton>
             </div>

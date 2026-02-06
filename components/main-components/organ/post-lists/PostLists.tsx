@@ -1,30 +1,34 @@
-"use client"
-
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import style from "./PostLists.module.css";
 import PostList from "../postlist/PostList";
 import blogHero from "@/public/blog-hero.png";
-import { truncate } from "@/utils";
+import { getPosts, truncate } from "@/utils";
 import Image from "next/image";
 import noPostPic from "../../../../public/Book lover.gif"
 import SmallText from "../../cell/small-text/SmallText";
-import { usePostsContext } from "@/hooks/use-posts-context";
+import { cookies } from "next/headers";
 
-const PostLists: FC = () => {
-  const { posts, isLoading, fetchAllPosts } = usePostsContext();
+const PostLists: FC = async () => {
 
-  useEffect(() => {
-    fetchAllPosts();
-  }, []);
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+  const res = await fetch(getPosts(0, 30), {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    next: {revalidate: 60}
+  });
+  const data = await res.json();
+  const posts = data.content;
 
-  if (isLoading) {
-    return <div style={{ textAlign: "center", padding: "4rem 0" }}>Loading posts...</div>;
-  }
+
 
   if (posts.length === 0) {
     return (
       <div className={style.noPost}>
-        <Image src={noPostPic} alt="Book lover" width={500} height={500} />
+        <Image src={noPostPic} alt="Book lover" width={400} />
         <h2>Oh! No post yet!</h2>
         <SmallText>Come back next time</SmallText>
       </div>
@@ -33,19 +37,19 @@ const PostLists: FC = () => {
 
   return (
     <main className={style.PostLists}>
-      {posts.map((post) => (
+      {posts.map((post: { id: any; title: string; subTitle: string; postBanner: any; likeCount: number; commentCount: number; createdAt: string; slug: string; authorFullName: string; username: string; }) => (
         <PostList
           key={post.id}
           id={post.id}
           title={truncate(post.title, 60)}
-          subtitle={truncate(post.subtitle || "", 100)}
-          image={post.image ?? blogHero}
-          likes={post.likes}
-          comments={post.comments}
-          time={post.time}
+          subtitle={truncate(post.subTitle || "", 100)}
+          image={post.postBanner ?? blogHero}
+          likes={post.likeCount}
+          comments={post.commentCount}
+          time={post.createdAt}
           slug={post.slug}
           authorFullName={post.authorFullName}
-          authorUsername={post.authorUsername}
+          authorUsername={post.username}
         />
       ))}
     </main>

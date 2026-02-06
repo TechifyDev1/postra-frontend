@@ -1,26 +1,47 @@
 "use client"
 
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { ModalContext } from "@/contexts/ModalContext"
-import { usePostsContext } from "@/hooks/use-posts-context"
 import { useToast } from "@/contexts/ToastContext"
 import MediumButton from "@/components/landing-page/cell/medium-button/MediumButton"
 import Modal from "@/components/landing-page/tissue/modal/Modal"
 import style from "./ConfirmDeletePopUp.module.css"
+import { deletePostUrl } from "@/utils"
+import { useRouter } from "next/navigation"
 
 const ConfirmDeletePopUp = () => {
     const { modals, closeModal, deleteSlug } = useContext(ModalContext);
-    const { deletePost, isDeleting } = usePostsContext();
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const { showToast } = useToast();
+    const router = useRouter();
 
     const handleConfirm = async () => {
+        if (isDeleting) return;
+        setIsDeleting(true);
         if (!deleteSlug) return;
-        const success = await deletePost(deleteSlug);
-        if (success) {
+        try {
+            const res = await fetch(deletePostUrl(deleteSlug), {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include"
+            })
+
+            if (!res.ok) {
+                showToast("Failed to delete post", "error");
+                return;
+            }
             showToast("Post deleted successfully", "success");
             closeModal("confirmDelete");
-        } else {
+            router.refresh()
+        } catch (error) {
+            if (error instanceof Error) {
+                console.error(error.message)
+            }
             showToast("Failed to delete post", "error");
+        } finally {
+            setIsDeleting(false);
         }
     }
 
