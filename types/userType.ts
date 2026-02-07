@@ -1,16 +1,19 @@
 import { Dispatch, SetStateAction } from "react";
 
 export interface userInterface {
-    fullname: string;
+    fullName: string;
     username: string;
     noOffollowers: number;
     noOffollowing: number;
     profileImage: string;
-    coverImage?: string;
+    bgImage?: string;
+    bio?: string;
+    profilePictureUrl?: string;
 }
 
 export interface userContextInterface {
     user: userInterface | null;
     setUser: Dispatch<SetStateAction<userInterface | null>>;
     isLoading: boolean;
+    refetchUser?: () => {};
 }

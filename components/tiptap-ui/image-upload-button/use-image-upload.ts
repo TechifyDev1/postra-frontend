@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { type Editor } from "@tiptap/react"
 
 // --- Hooks ---
@@ -174,18 +173,6 @@ export function useImageUpload(config?: UseImageUploadConfig) {
     return success
   }, [editor, onInserted])
 
-  useHotkeys(
-    IMAGE_UPLOAD_SHORTCUT_KEY,
-    (event) => {
-      event.preventDefault()
-      handleImage()
-    },
-    {
-      enabled: isVisible && canInsert,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    }
-  )
 
   return {
     isVisible,

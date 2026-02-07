@@ -65,3 +65,10 @@
     flex-direction: column;
     gap: 1.5rem;
 }
+
+.actionButtons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}

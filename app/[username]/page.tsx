@@ -1,4 +1,7 @@
 import { frontendBaseUrl, getUserPostsUrl, getUserUrl, truncate } from "@/utils";
+import ProfileEditButton from "@/components/main-components/tissue/profile-edit-button/ProfileEditButton";
+import NavBarWrapper from "@/components/main-components/organ/NavBarWrapper";
+import LogoutButton from "@/components/main-components/tissue/logout-button/LogoutButton";
 import { Metadata } from "next"
 import { notFound } from "next/navigation";
 import { FC } from "react";
@@ -54,8 +57,6 @@ export async function generateMetadata({ params }: { params: { username: string 
 }
 
 
-import ProfileEditButton from "@/components/main-components/tissue/profile-edit-button/ProfileEditButton";
-import NavBarWrapper from "@/components/main-components/organ/NavBarWrapper";
 
 const page: FC<{ params: { username: string } }> = async ({ params }) => {
     const cookieStore = cookies();
@@ -114,7 +115,10 @@ const page: FC<{ params: { username: string } }> = async ({ params }) => {
                     </LargeText>
                     <ProfileCounts />
                     {user.currentUser && (
-                        <ProfileEditButton />
+                        <div className={style.actionButtons}>
+                            <ProfileEditButton />
+                            <LogoutButton />
+                        </div>
                     )}
                 </div>
                 <div className={style.buttonContainer}>

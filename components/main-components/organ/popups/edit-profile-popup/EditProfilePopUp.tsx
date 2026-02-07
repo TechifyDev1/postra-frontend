@@ -14,7 +14,7 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 const EditProfilePopUp: FC = () => {
     const { modals, closeModal } = useContext(ModalContext);
-    const { user, refetchUser } = useUserContext();
+    const { user } = useUserContext();
     const { showToast } = useToast();
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
@@ -30,6 +30,7 @@ const EditProfilePopUp: FC = () => {
     });
 
     useEffect(() => {
+        console.log(user)
         if (user) {
             setFormData({
                 fullName: user.fullName || "",
@@ -115,7 +116,6 @@ const EditProfilePopUp: FC = () => {
 
             if (res.ok) {
                 showToast("Profile updated successfully", "success");
-                await refetchUser();
                 closeModal("editProfile");
                 window.location.reload();
             } else {
@@ -133,7 +133,7 @@ const EditProfilePopUp: FC = () => {
     return (
         <Modal show={modals.editProfile} onClose={() => closeModal("editProfile")}>
             <div className={style.container} onClick={(e) => e.stopPropagation()}>
-                <LargeText align="center" bold={true}>Edit Profile</LargeText>
+                <LargeText align="center" >Edit Profile</LargeText>
 
                 <input type="file" accept="image/*" ref={bannerInpRef} style={{ display: 'none' }} />
                 <input type="file" accept="image/*" ref={profileInpRef} style={{ display: 'none' }} />

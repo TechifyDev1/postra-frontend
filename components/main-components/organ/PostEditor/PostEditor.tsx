@@ -13,6 +13,7 @@ import { deleteUrl, getApost, publishPostUrl, signUrl, updatePostUrl, uploadUrl 
 import { useToast } from "@/contexts/ToastContext";
 import { notFound, useParams } from "next/navigation";
 import { useUserContext } from "@/hooks/use-user-context";
+import { useRouter } from "next/navigation";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
@@ -36,6 +37,7 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
   const postSlug = params.postSlug as string;
   const username = params.username as string;
   const { user, isLoading } = useUserContext();
+  const router = useRouter();
 
 
   async function fetchPost() {
@@ -338,6 +340,7 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
           content: editor.getHTML()
         })
       });
+      const post = await res.json();
       if (!res.ok) {
         const errorMessage = await res.text();
         console.log("Error: ", errorMessage);
@@ -352,6 +355,7 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
           setPostBannerId("");
         }
         showToast(edit ? "Post Updated Successfully" : "Post Published Successfully", "success");
+        router.push(`${post.authorUsername}/${post.slug}`); 
       }
     } catch (err) {
       if (err instanceof Error) {

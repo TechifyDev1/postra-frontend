@@ -18,7 +18,6 @@ import {
 // --- UI Primitives ---
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button } from "@/components/tiptap-ui-primitive/button"
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
 
 export interface ImageUploadButtonProps
   extends Omit<ButtonProps, "type">,
@@ -39,7 +38,6 @@ export function ImageShortcutBadge({
 }: {
   shortcutKeys?: string
 }) {
-  return <Badge>{parseShortcutKeys({ shortcutKeys })}</Badge>
 }
 
 /**
@@ -112,7 +110,6 @@ export const ImageUploadButton = React.forwardRef<
           <>
             <Icon className="tiptap-button-icon" />
             {text && <span className="tiptap-button-text">{text}</span>}
-            {showShortcut && <ImageShortcutBadge shortcutKeys={shortcutKeys} />}
           </>
         )}
       </Button>
