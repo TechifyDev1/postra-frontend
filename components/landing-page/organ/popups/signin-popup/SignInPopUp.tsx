@@ -66,10 +66,15 @@ const SignInPopUp = () => {
             showToast(data.message, "success");
             if (data.data != null) {
                 setUser(data.data);
+                if (data.data.token) {
+                    document.cookie = `token=${data.data.token}; path=/; max-age=86400; SameSite=Lax`;
+                }
             }
             setIsLoading(false);
             closeModal('login');
-            router.refresh();
+            setTimeout(() => {
+                router.refresh();
+            }, 100);
         } catch (error) {
             showToast("Login failed, please try again", "error");
             console.log(error)
