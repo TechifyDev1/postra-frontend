@@ -52,7 +52,7 @@ export interface PostListProps {
   id?: number;
   title: string;
   subtitle?: string;
-  image?: StaticImageData | string;
+  image: StaticImageData | string;
   likes: number;
   comments: number;
   time: string;

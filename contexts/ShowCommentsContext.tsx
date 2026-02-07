@@ -1,3 +1,4 @@
+"use client"
 import { showCommentContextInterface } from "@/types/show-comments-types";
 import { createContext } from "react";
 

@@ -1,15 +1,11 @@
 import { ImageAvatarProps } from '@/types/types';
 import style from './ImageAvatar.module.css';
 import Image from "next/image";
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const ImageAvatar = ({ src, alt, size = 'medium', username }: ImageAvatarProps) => {
-    const {push} = useRouter();
-    const handleClick = () => {
-        push(`/${username}`)
-    }
     return (
-        <div className={`${style.ImageAvatar} ${style[size]}`} onClick={handleClick}>
+        <Link className={`${style.ImageAvatar} ${style[size]}`} href={`/${username}`}>
             <Image
                 src={src}
                 alt={alt ?? 'Avatar'}
@@ -17,7 +13,7 @@ const ImageAvatar = ({ src, alt, size = 'medium', username }: ImageAvatarProps) 
                 style={{ objectFit: 'cover' }}
                 sizes="(max-width: 768px) 30px, 50px"
             />
-        </div>
+        </Link>
     );
 };
 

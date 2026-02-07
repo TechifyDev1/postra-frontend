@@ -9,6 +9,9 @@ import CommentButton from "@/components/main-components/tissue/comment-button/Co
 import AuthorInfo from "@/components/main-components/tissue/authorInfo/AuthorInfo";
 import NavBarWrapper from "@/components/main-components/organ/NavBarWrapper";
 import EditButton from "@/components/main-components/tissue/edit-button/EditButton";
+import Image from "next/image";
+import defaultBanner from "../../../public/postra-banner.jpg"
+import DeleteButton from "@/components/main-components/tissue/delete-button/DeleteButton";
 
 export async function generateMetadata({
   params,
@@ -43,7 +46,7 @@ export async function generateMetadata({
   const postUrl = `${siteUrl}/${post.authorUsername}/${post.slug}`;
 
   return {
-    title: `${post.title} | ${post.authorFullName}`,
+    title: `${post.title} | ${post.authorFullName} | ${post.authorUsername}`,
     description,
     alternates: {
       canonical: postUrl,
@@ -98,10 +101,11 @@ const page: FC<{ params: { username: string; postSlug: string } }> = async ({
 
       {/* Hero / Banner Section */}
       <section className={styles.hero}>
-        <img
-          src={post.postBanner}
+        <Image
+          src={post.postBanner === "" || post.postBanner === null ? defaultBanner : post.postBanner}
           alt={post.title}
           className={styles.postBanner}
+          fill
         />
         <div className={styles.heroOverlay}>
           <h1 className={styles.postTitle}>{post.title}</h1>
@@ -122,6 +126,7 @@ const page: FC<{ params: { username: string; postSlug: string } }> = async ({
         <LikeButton isLiked={false} count={post.likeCount} slug={post.slug} />
         <CommentButton count={post.commentCount | 0} slug={post.slug} />
         <EditButton username={post.authorUsername} slug={post.slug} />
+        <DeleteButton username={post.authorUsername} slug={post.slug} />
       </section>
       <AuthorInfo post={post} />
     </div>

@@ -10,6 +10,7 @@ import { UseShowComments } from '@/hooks/use-show-comments';
 const CommentButton: FC<CommentButtonProps> = ({ count, slug }) => {
     const showCommentsHook = UseShowComments();
     const handleClick = () => {
+        showCommentsHook.setSlug(slug!);
         showCommentsHook.setShow((prev) => !prev)
         console.log("Show show comment:", showCommentsHook.show);
     }
@@ -19,7 +20,6 @@ const CommentButton: FC<CommentButtonProps> = ({ count, slug }) => {
                 <ChatCircle size={20} className={style.commentIcon} fill='fill' color='var(--text-color-primary)' />
                 <SmallText>{count}</SmallText>
             </button>
-            <CommentPopUp postSlug={slug!} />
         </>
     );
 }

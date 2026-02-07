@@ -10,6 +10,8 @@ import { ModalProvider } from "@/contexts/ModalContext";
 import SignInPopUp from "@/components/landing-page/organ/popups/signin-popup/SignInPopUp";
 import SignUpPopUp from "@/components/landing-page/organ/popups/signup-popup/SignUpPopUp";
 import ConfirmDeletePopUp from "@/components/main-components/organ/popups/confirm-delete-popup/ConfirmDeletePopUp";
+import CommentPopUp from "@/components/main-components/organ/comment-popup/CommentPopUp";
+import EditProfilePopUp from "@/components/main-components/organ/popups/edit-profile-popup/EditProfilePopUp";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,15 +38,17 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ModalProvider>
           <UserProvider>
-              <ToastProvider>
-                <ShowCommentsProvider>
-                  {children}
-                  <SignInPopUp />
-                  <SignUpPopUp />
-                  <ConfirmDeletePopUp />
-                </ShowCommentsProvider>
-                <ToastContainer />
-              </ToastProvider>
+            <ToastProvider>
+              <ShowCommentsProvider>
+                {children}
+                <SignInPopUp />
+                <SignUpPopUp />
+                <ConfirmDeletePopUp />
+                <CommentPopUp />
+                <EditProfilePopUp />
+              </ShowCommentsProvider>
+              <ToastContainer />
+            </ToastProvider>
           </UserProvider>
         </ModalProvider>
       </body>

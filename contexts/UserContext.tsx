@@ -1,3 +1,4 @@
+"use client"
 import { userContextInterface } from "@/types/userType";
 import { createContext } from "react";
 

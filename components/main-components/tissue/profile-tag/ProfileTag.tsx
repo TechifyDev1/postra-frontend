@@ -8,10 +8,12 @@ import Link from "next/link";
 
 const ProfileTag: FC<{ name: string, username: string }> = ({ name, username }) => {
     return (
-        <Link className={style.ProfileTag} href={`/${username}`}>
-            <ImageAvatar src={avatar} alt={name} size="small" username={name} />
-            <SmallText>{name}</SmallText>
-        </Link>
+        <div className={style.ProfileTag}>
+            <ImageAvatar src={avatar} alt={name} size="small" username={username} />
+            <Link href={`/${username}`}>
+                <SmallText>{name}</SmallText>
+            </Link>
+        </div>
     )
 }
 

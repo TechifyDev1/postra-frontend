@@ -17,6 +17,7 @@ export const getCommentsUrl = (postSlug: string) => `${baseurl}/comments/${postS
 export const followUrl = (targetUsername: string) => `${baseurl}/follow/${targetUsername}`;
 export const checkFollowUrl = (targetUsername: string) => `${baseurl}/follow/is-following/${targetUsername}`;
 export const signUrl = () => `${baseurl}/sign`;
+export const updateUserUrl = () => `${baseurl}/users/profile`;
 export const frontendBaseUrl = "http://localhost:3000";
 
 export const getRelativeTime = (isoString: string) => {

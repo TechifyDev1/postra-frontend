@@ -90,6 +90,7 @@ body {
   color: var(--text-color-primary);
   font-family: var(--font-family-sans);
   font-size: var(--font-size-base);
+  height: 100vh;
 }
 
 button.primary {

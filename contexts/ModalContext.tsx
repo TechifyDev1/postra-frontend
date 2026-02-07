@@ -13,13 +13,14 @@ interface ModalType {
     login: boolean;
     signUp: boolean;
     confirmDelete: boolean;
+    editProfile: boolean;
 }
 
 
 export const ModalContext = createContext<ModalContextProps>({
     openModal: () => { },
     closeModal: () => { },
-    modals: { login: false, signUp: false, confirmDelete: false },
+    modals: { login: false, signUp: false, confirmDelete: false, editProfile: false },
     deleteSlug: null,
     setDeleteSlug: () => { }
 });
@@ -29,6 +30,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
         login: false,
         signUp: false,
         confirmDelete: false,
+        editProfile: false,
     });
     const [deleteSlug, setDeleteSlug] = useState<string | null>(null);
 

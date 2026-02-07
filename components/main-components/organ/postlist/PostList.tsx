@@ -14,6 +14,7 @@ import { getRelativeTime } from "@/utils";
 import { useUserContext } from "@/hooks/use-user-context";
 import EditButton from "../../tissue/edit-button/EditButton";
 import DeleteButton from "../../tissue/delete-button/DeleteButton";
+import defaultBanner from "../../../../public/postra-banner.jpg"
 
 const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, comments, time, slug, authorFullName, authorUsername }) => {
     const { user } = useUserContext();
@@ -29,7 +30,7 @@ const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, commen
                     {subtitle && <LandingLargeText align="left">{subtitle}</LandingLargeText>}
                 </div>
                 <div className={style.right}>
-                    {image && <Image src={image} alt={title} layout="responsive" className={style.image} width={800} height={400} />}
+                    {<Image src={image === null || image === "" ? defaultBanner : image} alt={title} layout="responsive" className={style.image} width={800} height={400} />}
                 </div>
             </Link>
             <div className={style.bottom}>

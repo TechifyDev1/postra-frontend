@@ -9,28 +9,32 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<userInterface | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchMe = async () => {
-            try {
-                const res = await fetch(getUserUrl("me"), {
-                    method: "GET",
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include'
-                });
-                const data = await res.json();
-                setUser(data.data)
-                console.log(data)
-            } catch (error) {
-                setUser(null);
-            } finally {
-                setIsLoading(false);
-            }
+    const fetchMe = async () => {
+        try {
+            const res = await fetch(getUserUrl("me"), {
+                method: "GET",
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            });
+            const data = await res.json();
+            setUser(data.data)
+        } catch (error) {
+            setUser(null);
+        } finally {
+            setIsLoading(false);
         }
+    }
+
+    useEffect(() => {
         fetchMe();
     }, []);
 
+    const refetchUser = async () => {
+        await fetchMe();
+    };
+
     return (
-        <UserContext.Provider value={{ user, setUser, isLoading }}>
+        <UserContext.Provider value={{ user, setUser, isLoading, refetchUser }}>
             {children}
         </UserContext.Provider>
     )

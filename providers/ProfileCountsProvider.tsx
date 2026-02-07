@@ -21,10 +21,10 @@ export const ProfileCountsProvider = ({ children, username }: { children: ReactN
             const fetchedProfileCounts: profileCountType = {
                 followersCount: user.numOfFollowers || 0,
                 followingCount: user.numOfFollowing || 0,
-                postCount: user.postsCount || 0
+                postCount: user.postCount || 0
             }
             setProfileCount(fetchedProfileCounts);
-            console.log(fetchedProfileCounts)
+            console.log("Fetched profile counts",fetchedProfileCounts)
         } catch (error) {
             console.error(error);
             setProfileCount(null);

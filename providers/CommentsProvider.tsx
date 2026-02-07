@@ -1,3 +1,4 @@
+"use client"
 import { CommentsContext } from "@/contexts/CommentsContext";
 import { ModalContext } from "@/contexts/ModalContext";
 import { useToast } from "@/contexts/ToastContext";
