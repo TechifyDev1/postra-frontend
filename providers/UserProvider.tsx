@@ -3,11 +3,13 @@
 import { UserContext } from "@/contexts/UserContext";
 import { userInterface } from "@/types/userType";
 import { getUserUrl } from "@/utils";
+import { useRouter } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<userInterface | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const router = useRouter();
 
     const fetchMe = async () => {
         try {
@@ -18,6 +20,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             });
             const data = await res.json();
             setUser(data.data)
+            router.refresh();
         } catch (error) {
             setUser(null);
         } finally {
