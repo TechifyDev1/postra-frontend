@@ -69,9 +69,7 @@ const SignInPopUp = () => {
             }
             setIsLoading(false);
             closeModal('login');
-            setTimeout(() => {
-                router.refresh();
-            }, 100);
+            router.refresh();
         } catch (error) {
             showToast("Login failed, please try again", "error");
             console.log(error)
