@@ -13,7 +13,6 @@ import Link from "next/link";
 import { getRelativeTime } from "@/utils";
 import { useUserContext } from "@/hooks/use-user-context";
 import EditButton from "../../tissue/edit-button/EditButton";
-import DeleteButton from "../../tissue/delete-button/DeleteButton";
 import defaultBanner from "../../../../public/postra-banner.jpg"
 
 const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, comments, time, slug, authorFullName, authorUsername }) => {
@@ -42,7 +41,7 @@ const PostList: FC<PostListProps> = ({ id, title, subtitle, image, likes, commen
 
                     <CommentButton count={comments} slug={slug} />
                     {isAuthor && <EditButton slug={slug} username={authorUsername} />}
-                    {isAuthor && <DeleteButton slug={slug} username={authorUsername}/>}
+                    {/* {isAuthor && <DeleteButton slug={slug} username={authorUsername}/>} */}
                 </div>
             </div>
         </div>
