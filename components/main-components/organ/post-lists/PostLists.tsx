@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { FC } from "react";
 import style from "./PostLists.module.css";
 import PostList from "../postlist/PostList";
@@ -18,7 +20,7 @@ const PostLists: FC = async () => {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
     },
-    next: {revalidate: 60}
+    cache: "no-store"
   });
   const data = await res.json();
   const posts = data.content;
