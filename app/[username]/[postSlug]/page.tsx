@@ -1,4 +1,4 @@
-import { getApost } from "@/utils";
+import { getApost, frontendBaseUrl } from "@/utils";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
@@ -20,12 +20,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { username, postSlug } = await params;
 
+  // We don't need authentication to fetch public post data for SEO
   const res = await fetch(getApost(username, postSlug), {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      "X-Client-Type": "web",
     },
-    credentials: "include",
   });
 
   if (!res.ok) {
@@ -36,41 +37,44 @@ export async function generateMetadata({
   }
 
   const post = await res.json();
-
   const description =
     post.subTitle?.length > 0
       ? post.subTitle
-      : post.content?.slice(0, 150).replace(/\s+$/, "") + "...";
+      : (post.content?.replace(/<[^>]*>/g, "").slice(0, 150).replace(/\s+$/, "") + "..."); // Strip HTML tags
 
-  const siteUrl = "https://qudus.com";
-  const postUrl = `${siteUrl}/${post.authorUsername}/${post.slug}`;
+  const postUrl = `${frontendBaseUrl}/${username}/${postSlug}`;
+  // Use post banner if available, otherwise use default banner
+  const postImage = (post.postBanner && post.postBanner !== "") ? post.postBanner : `${frontendBaseUrl}/postra-banner.jpg`;
+
+  const title = `${post.title} | ${post.authorFullName} | Postra`;
 
   return {
-    title: `${post.title} | ${post.authorFullName} | ${post.authorUsername}`,
+    title: title,
     description,
     alternates: {
       canonical: postUrl,
     },
     openGraph: {
-      title: post.title,
+      title: title,
       description,
       url: postUrl,
       type: "article",
       images: [
         {
-          url: post.postBanner ?? `${siteUrl}/default-banner.png`,
+          url: postImage,
           width: 1200,
           height: 630,
           alt: post.title,
         },
       ],
       authors: [post.authorFullName],
+      siteName: "Postra",
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
+      title: title,
       description,
-      images: [post.postBanner ?? `${siteUrl}/default-banner.png`],
+      images: [postImage],
     },
   };
 }

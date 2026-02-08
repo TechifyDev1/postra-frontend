@@ -19,7 +19,7 @@ export const checkFollowUrl = (targetUsername: string) => `${baseurl}/follow/is-
 export const signUrl = () => `${baseurl}/sign`;
 export const updateUserUrl = () => `${baseurl}/users/profile`;
 export const logoutUrl = () => `${baseurl}/users/logout`
-export const frontendBaseUrl = "http://localhost:3000";
+export const frontendBaseUrl = "https://postra-frontend.vercel.app";
 
 export const getRelativeTime = (isoString: string) => {
     const date = new Date(isoString);

@@ -18,40 +18,61 @@ import ProfileCounts from "@/components/main-components/profile-counts/ProfileCo
 import Image from "next/image";
 
 export async function generateMetadata({ params }: { params: { username: string } }): Promise<Metadata> {
-    const cookieStore = cookies();
-    const tokenCookie = (await cookieStore).get("token");
-    const options = {
+    const { username } = await params;
+
+    // Fetch user data
+    // We don't need authentication to fetch public profile data for SEO
+    const res = await fetch(getUserUrl(username), {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            ...(tokenCookie?.value ? { Authorization: `Bearer ${tokenCookie.value}` } : {}),
+            "X-Client-Type": "web",
         },
-    };
-    const { username } = await params;
-    const res = await fetch(getUserUrl(username), options);
-    if (!res.ok) {
-        console.log(res);
-        return notFound();
-    }
-    const userData = await res.json();
-    const user = await userData.data;
-    console.log("User data", userData);
+    });
 
+    if (!res.ok) {
+        return {
+            title: "User Not Found",
+            description: "The user you are looking for does not exist."
+        };
+    }
+
+    const userData = await res.json();
+    const user = userData.data;
+
+    // Fallback image logic
+    const profileImage = user.profilePictureUrl || `${frontendBaseUrl}/postra-banner.jpg`;
+    const title = `${user.fullName} | ${user.username} | Postra`;
+    const description = `Read stories and posts from ${user.fullName} (${user.username}) on Postra. ${user.bio || ""}`;
+    const url = `${frontendBaseUrl}/${username}`;
 
     return {
-        title: `${await user.fullName} | ${await user.username} | Postra`,
-        description: `Profile of ${await user.fullName}, a user on Postra.`,
+        title: title,
+        description: description,
+        keywords: [user.username, user.fullName, "Postra profile", "Postra writer", "blog", "stories"],
+        alternates: {
+            canonical: url,
+        },
         openGraph: {
-            title: `${await user.fullName} | Postra`,
-            description: `Profile of ${await user.fullName}, a user on Postra.`,
-            url: `${frontendBaseUrl}/${username}`,
+            title: title,
+            description: description,
+            url: url,
+            type: "profile",
             images: [
                 {
-                    url: user.profilePictureUrl || `${frontendBaseUrl}/default-profile.png`,
-                    alt: `${await user.fullName}'s profile picture`
+                    url: profileImage,
+                    width: 800,
+                    height: 800,
+                    alt: `${user.fullName}'s profile picture`
                 }
             ],
             siteName: "Postra"
+        },
+        twitter: {
+            card: "summary",
+            title: title,
+            description: description,
+            images: [profileImage],
         }
     }
 }
