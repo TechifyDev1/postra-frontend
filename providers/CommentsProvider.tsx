@@ -10,8 +10,8 @@ import { ReactNode, useContext, useEffect, useState } from "react";
 export const CommentsProvider = ({ children, postSlug }: { children: ReactNode, postSlug: string }) => {
     const [comments, setComments] = useState<commentInterface[] | null>(null);
     const { user } = useUserContext();
-    const {showToast} = useToast();
-      const { openModal } = useContext(ModalContext);
+    const { showToast } = useToast();
+    const { openModal } = useContext(ModalContext);
     const username = user?.username;
 
     const fetchComments = async () => {
@@ -35,15 +35,22 @@ export const CommentsProvider = ({ children, postSlug }: { children: ReactNode, 
         }
     }
     const addComment = async (content: string) => {
-        if(username === undefined) {
+        if (username === undefined) {
             showToast('You are not logged in, log in to add comment', 'error');
             openModal("signUp");
             return;
         }
+
+        // Optimistic update
+        const tempId = Date.now().toString(); // Temporary ID for key
         const commentObject: commentInterface = {
             authorUsername: username,
             content
         }
+
+        // Add to state immediately
+        setComments(prev => prev ? [commentObject, ...prev] : [commentObject]);
+
         try {
             const res = await fetch(addCommentUrl(postSlug), {
                 method: "POST",
@@ -54,13 +61,15 @@ export const CommentsProvider = ({ children, postSlug }: { children: ReactNode, 
                 body: JSON.stringify(commentObject),
             });
 
-            if (!res.ok){
-                showToast("An unknown error occured while adding your comment", 'error')
+            if (!res.ok) {
                 throw new Error("Failed to add comment")
             };
 
+            // Silently refetch to get real IDs and data
             await fetchComments();
         } catch (error) {
+            // Revert optimistic update on error
+            setComments(prev => prev ? prev.filter(c => c !== commentObject) : []);
             showToast("An unknown error occured while adding your comment", 'error')
             console.error(error);
         }
