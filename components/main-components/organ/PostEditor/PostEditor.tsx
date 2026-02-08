@@ -116,7 +116,7 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
 
         const response = await signRef.json();
         const data = response.data;
-        const {signature} = data;
+        const { signature } = data;
 
         formData.append("file", file);
         formData.append("api_key", "544934933231257");
@@ -181,7 +181,7 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
         }
         const response = await signRef.json();
         const data = response.data;
-        const {signature} = data;
+        const { signature } = data;
         console.log(response);
         console.log("Response for signature:", signature)
         formData.append("file", file);
@@ -217,43 +217,39 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
 
 
   const handleBannerRem = async (): Promise<void> => {
-    // if (!bannerImgRef.current) {
-    //   console.error("Banner Image Ref is null");
-    //   return;
-    // }
-    // const publicId = bannerImgRef.current.dataset.publicId;
-    // console.log(bannerImgRef.current);
     setIsDeleting(true);
-    if (!postBannerId) {
-      console.log("Public Id is missing");
-      return;
-    }
 
+    // Only attempt to delete from Cloudinary if we have a public ID (newly uploaded image)
+    if (postBannerId) {
+      try {
+        const res = await fetch(deleteUrl(postBannerId), {
+          method: "DELETE",
+          credentials: "include" as RequestCredentials,
+        });
 
-    try {
-      const res = await fetch(deleteUrl(postBannerId), {
-        method: "DELETE",
-        credentials: "include" as RequestCredentials,
-      });
-
-      if (!res.ok) {
-        const errorMessage = await res.text();
-        console.error("Delete error:", errorMessage);
-        showToast("Unable to remove the banner", "error");
-        return;
+        if (!res.ok) {
+          const errorMessage = await res.text();
+          console.error("Delete error:", errorMessage);
+          // We don't return here, we still want to remove it from UI
+          showToast("Warning: Image might not have been deleted from cloud", "error");
+        } else {
+          const data = await res.text();
+          console.log("Delete response:", data);
+          showToast("Banner Deleted from cloud", "success");
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        // Continue to remove from UI
       }
-
-      const data = await res.text();
-      console.log("Delete response:", data);
-
-      setPostBannerUrl("");
-      showToast("Banner Deleted", "success");
-    } catch (err) {
-      console.error("Unexpected error:", err);
-      showToast("Something went wrong", "error");
-    } finally {
-      setIsDeleting(false);
     }
+
+    // Always clear the state
+    setPostBannerUrl("");
+    setPostBannerId("");
+    if (imgInpRef.current) {
+      imgInpRef.current.value = "";
+    }
+    setIsDeleting(false);
   }
 
 
@@ -355,7 +351,7 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
           setPostBannerId("");
         }
         showToast(edit ? "Post Updated Successfully" : "Post Published Successfully", "success");
-        router.push(`${post.authorUsername}/${post.slug}`); 
+        router.push(`${post.authorUsername}/${post.slug}`);
       }
     } catch (err) {
       if (err instanceof Error) {
