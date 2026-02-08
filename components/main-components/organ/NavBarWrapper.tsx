@@ -13,7 +13,6 @@ const NavBarWrapper = async () => {
                 'Content-Type': 'application/json',
                 "Authorization": `Bearer ${token}`
             },
-            next: { revalidate: 0 },
             cache: "no-store"
         });
         if (!response.ok) {
