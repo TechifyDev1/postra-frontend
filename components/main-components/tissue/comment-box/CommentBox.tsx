@@ -35,7 +35,7 @@ const CommentBox: FC<{ postSlug: string }> = ({ postSlug }) => {
                 </button>
             </header>
             <div className={style.commentsContainer}>
-                {comments !== null && comments.length === 0 ? (<div className={style.noComment}>No post yet, be the first the comment</div>) : comments?.map((com, index) => (<CommentList authorUsername={com.authorUsername} comment={com.content} key={index} />))}
+                {comments !== null && comments.length === 0 ? (<div className={style.noComment}>No post yet, be the first the comment</div>) : comments?.map((com, index) => (<CommentList authorUsername={com.authorUsername} comment={com.content} profilePictureUrl={com.profilePictureUrl} key={index} />))}
             </div>
             <form className={style.commentForm} onSubmit={handleSubmit}>
                 <input type="text" name="comment" id="comment" className={style.commentField} placeholder="Enter you comment" onChange={(e) => { setCommentText(e.target.value) }} value={commentText} />

@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 export interface commentInterface {
     content: string;
     authorUsername: string;
+    profilePictureUrl?: string;
 }
 
 export interface commentsContextInterface {
