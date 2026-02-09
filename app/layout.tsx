@@ -61,6 +61,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="google-site-verification" content="jjegQ2Hi3U5KA2rTXyOj3vbCCzWUGW-cTwBSKUaWz3c" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ModalProvider>
           <UserProvider>
