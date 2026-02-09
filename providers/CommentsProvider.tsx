@@ -7,7 +7,7 @@ import { commentInterface } from "@/types/commentsTypes";
 import { addCommentUrl, getCommentsUrl } from "@/utils";
 import { ReactNode, useContext, useEffect, useState } from "react";
 
-export const CommentsProvider = ({ children, postSlug }: { children: ReactNode, postSlug: string }) => {
+export const CommentsProvider = ({ children, postSlug }: { children: ReactNode, postSlug?: string }) => {
     const [comments, setComments] = useState<commentInterface[] | null>(null);
     const { user } = useUserContext();
     const { showToast } = useToast();
@@ -15,6 +15,7 @@ export const CommentsProvider = ({ children, postSlug }: { children: ReactNode, 
     const username = user?.username;
 
     const fetchComments = async () => {
+        if(!postSlug) return;
         try {
             const res = await fetch(getCommentsUrl(postSlug), {
                 method: "GET",
@@ -52,6 +53,7 @@ export const CommentsProvider = ({ children, postSlug }: { children: ReactNode, 
         setComments(prev => prev ? [commentObject, ...prev] : [commentObject]);
 
         try {
+            if(!postSlug) return;
             const res = await fetch(addCommentUrl(postSlug), {
                 method: "POST",
                 headers: {

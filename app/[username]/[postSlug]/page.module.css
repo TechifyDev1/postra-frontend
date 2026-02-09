@@ -20,6 +20,12 @@
     object-position: center;
   }
 
+  .darkOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.674);
+  }
+
   .heroOverlay {
     position: absolute;
     bottom: 10%;
@@ -36,6 +42,18 @@
     .postSubtitle {
       font-size: 1rem;
       opacity: 0.9;
+    }
+
+    @media (max-width: 600px) {
+      .heroOverlay {
+        .postTitle {
+          font-size: 1.4rem;
+        }
+
+        .postSubtitle {
+          font-size: 0.85rem;
+        }
+      }
     }
   }
 }
@@ -57,7 +75,8 @@
       margin-bottom: 1.2rem;
     }
 
-    h2, h3 {
+    h2,
+    h3 {
       margin-top: 1.8rem;
     }
 
@@ -70,14 +89,14 @@
 }
 
 .likeSection {
-    width: 100%;
-    max-width: 420px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: auto;
-    gap: 2rem;
-    border-top: 1px solid var(--input-border);
-    border-bottom: 1px solid var(--input-border);
-    padding: 0.5rem 0;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  gap: 2rem;
+  border-top: 1px solid var(--input-border);
+  border-bottom: 1px solid var(--input-border);
+  padding: 0.5rem 0;
 }

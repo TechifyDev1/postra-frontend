@@ -15,6 +15,7 @@
     "@tiptap/react": "^3.2.1",
     "@tiptap/starter-kit": "^3.0.7",
     "next": "16.1.6",
+    "nextjs-toploader": "^3.9.17",
     "phosphor-react": "^1.4.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",

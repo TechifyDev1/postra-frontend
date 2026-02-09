@@ -12,6 +12,7 @@ import EditButton from "@/components/main-components/tissue/edit-button/EditButt
 import Image from "next/image";
 import defaultBanner from "../../../public/postra-banner.jpg"
 import DeleteButton from "@/components/main-components/tissue/delete-button/DeleteButton";
+import { CommentsProvider } from "@/providers/CommentsProvider";
 
 export async function generateMetadata({
   params,
@@ -100,40 +101,43 @@ const page: FC<{ params: { username: string; postSlug: string } }> = async ({
   const post = await res.json();
   console.log(post)
   return (
-    <div className={styles.postPage}>
-      <NavBarWrapper />
+    <CommentsProvider postSlug={postSlug}>
+      <div className={styles.postPage}>
+        <NavBarWrapper />
 
-      {/* Hero / Banner Section */}
-      <section className={styles.hero}>
-        <Image
-          src={post.postBanner === "" || post.postBanner === null ? defaultBanner : post.postBanner}
-          alt={post.title}
-          className={styles.postBanner}
-          fill
-        />
-        <div className={styles.heroOverlay}>
-          <h1 className={styles.postTitle}>{post.title}</h1>
-          <p className={styles.postSubtitle}>{post.subTitle}</p>
-        </div>
-      </section>
+        {/* Hero / Banner Section */}
+        <section className={styles.hero}>
+          <Image
+            src={post.postBanner === "" || post.postBanner === null ? defaultBanner : post.postBanner}
+            alt={post.title}
+            className={styles.postBanner}
+            fill
+          />
+          <div className={styles.darkOverlay}></div>
+          <div className={styles.heroOverlay}>
+            <h1 className={styles.postTitle}>{post.title}</h1>
+            <p className={styles.postSubtitle}>{post.subTitle}</p>
+          </div>
+        </section>
 
 
-      {/* Content Section */}
-      <section className={styles.postContent}>
-        <div
-          className={styles.content}
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
-      </section>
-      {/* Like section */}
-      <section className={styles.likeSection}>
-        <LikeButton isLiked={false} count={post.likeCount} slug={post.slug} />
-        <CommentButton count={post.commentCount | 0} slug={post.slug} />
-        <EditButton username={post.authorUsername} slug={post.slug} />
-        <DeleteButton username={post.authorUsername} slug={post.slug} />
-      </section>
-      <AuthorInfo post={post} />
-    </div>
+        {/* Content Section */}
+        <section className={styles.postContent}>
+          <div
+            className={styles.content}
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+        </section>
+        {/* Like section */}
+        <section className={styles.likeSection}>
+          <LikeButton isLiked={false} count={post.likeCount} slug={post.slug} />
+          <CommentButton count={post.commentCount | 0} slug={post.slug} />
+          <EditButton username={post.authorUsername} slug={post.slug} />
+          <DeleteButton username={post.authorUsername} slug={post.slug} />
+        </section>
+        <AuthorInfo post={post} />
+      </div>
+    </CommentsProvider>
   );
 };
 

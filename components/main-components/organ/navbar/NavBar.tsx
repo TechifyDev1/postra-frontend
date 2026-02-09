@@ -24,7 +24,7 @@ const NavBar: FC = () => {
                     </div>
                 </Link>
                 <Bell size={24} className={style.notificationIcon} weight='thin' />
-                <ImageAvatar src={avatar} alt="User Avatar" size="medium" username={user?.username!} />
+                <ImageAvatar src={user?.profilePictureUrl ?? avatar} alt="User Avatar" size="medium" username={user?.username!} />
             </div>
         </nav>
     )

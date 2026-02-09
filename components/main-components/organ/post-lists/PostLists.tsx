@@ -9,6 +9,7 @@ import Image from "next/image";
 import noPostPic from "../../../../public/Book lover.gif"
 import SmallText from "../../cell/small-text/SmallText";
 import { cookies } from "next/headers";
+import { CommentsProvider } from "@/providers/CommentsProvider";
 
 const PostLists: FC = async () => {
 
@@ -24,6 +25,7 @@ const PostLists: FC = async () => {
   });
   const data = await res.json();
   const posts = data.content;
+  console.log(posts);
 
 
 
@@ -39,7 +41,7 @@ const PostLists: FC = async () => {
 
   return (
     <main className={style.PostLists}>
-      {posts.map((post: { id: any; title: string; subTitle: string; postBanner: any; likeCount: number; commentCount: number; createdAt: string; slug: string; authorFullName: string; username: string; }) => (
+      {posts.map((post: { id: any; title: string; subTitle: string; postBanner: any; likeCount: number; commentCount: number; createdAt: string; slug: string; authorFullName: string; username: string; profilePic?: string; }) => (
         <PostList
           key={post.id}
           id={post.id}
@@ -52,6 +54,7 @@ const PostLists: FC = async () => {
           slug={post.slug}
           authorFullName={post.authorFullName}
           authorUsername={post.username}
+          profilePic={post.profilePic}
         />
       ))}
     </main>

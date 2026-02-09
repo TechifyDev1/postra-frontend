@@ -57,6 +57,8 @@ const LikeButton: FC<LikeButtonProps> = ({ count, slug }) => {
     }
     if (loading) return;
     setLoading(true);
+          showToast("Please wait..", "info")
+
     try {
       const res = await fetch(likeUrl(slug), {
         method: "POST",

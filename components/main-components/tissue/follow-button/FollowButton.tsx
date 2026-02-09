@@ -45,6 +45,7 @@ const FollowButton: FC<FollowButtonProps> = ({ username }) => {
             return;
         }
         setLoading(true)
+        showToast("Please wait..", "info");
         try {
             const res = await fetch(followUrl(username), {
                 method: "POST",

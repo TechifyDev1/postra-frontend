@@ -15,5 +15,5 @@ export interface userContextInterface {
     user: userInterface | null;
     setUser: Dispatch<SetStateAction<userInterface | null>>;
     isLoading: boolean;
-    refetchUser?: () => {};
+    refetchUser: () => Promise<void>;
 }

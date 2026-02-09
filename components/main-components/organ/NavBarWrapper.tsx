@@ -20,7 +20,7 @@ const NavBarWrapper = async () => {
         }
         return <NavBar />
     } catch (error) {
-        console.error(error instanceof Error ? error.message : error);
+        console.log(error)
         return <NNavBar />
     }
 }

@@ -26,6 +26,7 @@ const geistMono = Geist_Mono({
 });
 
 import { frontendBaseUrl } from "@/utils";
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
   metadataBase: new URL(frontendBaseUrl),
@@ -65,6 +66,7 @@ export default function RootLayout({
         <meta name="google-site-verification" content="jjegQ2Hi3U5KA2rTXyOj3vbCCzWUGW-cTwBSKUaWz3c" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <NextTopLoader color="black" />
         <ModalProvider>
           <UserProvider>
             <ToastProvider>

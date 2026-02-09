@@ -2,8 +2,8 @@
 import Modal from "@/components/landing-page/tissue/modal/Modal";
 import { X } from "phosphor-react";
 import style from "./SignInPopUp.module.css";
-import { ChangeEvent, FormEvent, MouseEvent, useContext, useState } from "react";
-import { ModalContext } from "@/contexts/ModalContext";
+import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
+import { useModalContext } from "@/hooks/use-modal-context";
 import XlargeText from "@/components/landing-page/cell/xlarge-text/XlargeText";
 import TextField from "@/components/landing-page/tissue/textfield/TextField";
 import LargeButton from "@/components/landing-page/cell/large-button/LargeButton";
@@ -15,13 +15,13 @@ import { useUserContext } from "@/hooks/use-user-context";
 import { useRouter } from "next/navigation";
 
 const SignInPopUp = () => {
-    const { closeModal, modals, openModal } = useContext(ModalContext);
+    const { closeModal, modals, openModal } = useModalContext();
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [username, setUsername] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter();
-    const { setUser } = useUserContext();
+    const { setUser, refetchUser } = useUserContext();
     const { showToast } = useToast();
     const handleUsernameOrEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -75,6 +75,7 @@ const SignInPopUp = () => {
             setTimeout(() => {
                 router.refresh();
             }, 100);
+            refetchUser();
         } catch (error) {
             showToast("Login failed, please try again", "error");
             console.log(error)

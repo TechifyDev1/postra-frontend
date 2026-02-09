@@ -4,14 +4,16 @@ import LargeButton from "@/components/landing-page/cell/large-button/LargeButton
 import { useRouter } from "next/navigation";
 import { useToast } from "@/contexts/ToastContext";
 import { logoutUrl } from "@/utils";
+import { useUserContext } from "@/hooks/use-user-context";
 
 const LogoutButton: FC = () => {
     const router = useRouter();
-    const {showToast} = useToast();
+    const { showToast } = useToast();
+    const { setUser } = useUserContext();
     const [loading, setLoading] = useState(false);
 
     const handleLogout = async () => {
-        if(loading) return;
+        if (loading) return;
         setLoading(true);
         try {
             const res = await fetch(logoutUrl(), {
@@ -21,13 +23,24 @@ const LogoutButton: FC = () => {
                 },
                 credentials: "include"
             });
-            if(!res.ok) {
+            if (!res.ok) {
                 throw new Error("Unable to sign you out")
             }
+
+            // Clear user state
+            setUser(null);
+
+            // Clear token cookie
+            document.cookie = "token=; path=/; max-age=0; SameSite=Lax";
+
+            // Show success message
+            showToast("Logged out successfully", "success");
+
+            // Navigate to home and refresh
+            router.push("/");
             router.refresh();
-            router.push("/")
         } catch (error) {
-            if(error instanceof Error) {
+            if (error instanceof Error) {
                 showToast(error.message, "error")
                 console.error(error.message);
                 return;
@@ -39,7 +52,7 @@ const LogoutButton: FC = () => {
     };
 
     return (
-        <LargeButton style={{ marginTop: "1rem", backgroundColor: "#dc3545", borderColor: "#dc3545" }} onClick={handleLogout} isLoading= {loading}>
+        <LargeButton style={{ marginTop: "1rem", backgroundColor: "#dc3545", borderColor: "#dc3545" }} onClick={handleLogout} isLoading={loading}>
             Logout
         </LargeButton>
     );

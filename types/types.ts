@@ -59,4 +59,5 @@ export interface PostListProps {
   slug: string;
   authorFullName?: string;
   authorUsername: string;
+  profilePic?: string;
 }
