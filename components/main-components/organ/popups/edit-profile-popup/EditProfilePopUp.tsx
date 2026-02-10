@@ -62,6 +62,7 @@ const EditProfilePopUp: FC = () => {
             }
 
             setUploading(true);
+            showToast(`Uploading ${type}`, "info");
             try {
                 const timestamp = Math.round(new Date().getTime() / 1000);
                 const signRes = await fetch(signUrl(), {
@@ -101,9 +102,10 @@ const EditProfilePopUp: FC = () => {
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
+        if(loading) return;
         e.preventDefault();
         setLoading(true);
-
+        showToast("Updating your profile, please wait", "info")
         try {
             const res = await fetch(updateUserUrl(), {
                 method: "PUT",
