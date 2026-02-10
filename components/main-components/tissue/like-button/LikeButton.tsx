@@ -4,7 +4,7 @@ import { FC, MouseEventHandler, useContext, useEffect, useState } from "react";
 import { LikeButtonProps } from "@/types/types";
 import SmallText from "../../cell/small-text/SmallText";
 import { ThumbsUp } from "phosphor-react";
-import { likeUrl } from "@/utils";
+import { likeUrl, getAuthHeaders } from "@/utils";
 import { useToast } from "@/contexts/ToastContext";
 import { useUserContext } from "@/hooks/use-user-context";
 import { ModalContext } from "@/contexts/ModalContext";
@@ -24,14 +24,11 @@ const LikeButton: FC<LikeButtonProps> = ({ count, slug }) => {
       try {
         const res = await fetch(likeUrl(slug) + "/is-liked", {
           method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
+          headers: getAuthHeaders()
         });
         const result = await res.json();
         console.log("result", result);
-        if(typeof result == "boolean") {
+        if (typeof result == "boolean") {
           setData(result);
         } else {
           setData(false)
@@ -57,15 +54,12 @@ const LikeButton: FC<LikeButtonProps> = ({ count, slug }) => {
     }
     if (loading) return;
     setLoading(true);
-          showToast("Please wait..", "info")
+    showToast("Please wait..", "info")
 
     try {
       const res = await fetch(likeUrl(slug), {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
+        headers: getAuthHeaders()
       });
       const result = await res.json();
       console.log(result);

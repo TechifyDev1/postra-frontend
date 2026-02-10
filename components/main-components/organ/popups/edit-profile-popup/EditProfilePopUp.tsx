@@ -7,7 +7,7 @@ import style from "./EditProfilePopUp.module.css";
 import LargeText from "@/components/landing-page/cell/large-text/LargeText";
 import MediumButton from "@/components/landing-page/cell/medium-button/MediumButton";
 import { useToast } from "@/contexts/ToastContext";
-import { signUrl, updateUserUrl } from "@/utils";
+import { signUrl, updateUserUrl, getAuthHeaders } from "@/utils";
 import { Camera, X } from "phosphor-react";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -67,8 +67,7 @@ const EditProfilePopUp: FC = () => {
                 const timestamp = Math.round(new Date().getTime() / 1000);
                 const signRes = await fetch(signUrl(), {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
+                    headers: getAuthHeaders(),
                     body: JSON.stringify({ timestamp })
                 });
 
@@ -102,18 +101,15 @@ const EditProfilePopUp: FC = () => {
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
-        if(loading) return;
+        if (loading) return;
         e.preventDefault();
         setLoading(true);
         showToast("Updating your profile, please wait", "info")
         try {
             const res = await fetch(updateUserUrl(), {
                 method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-                credentials: "include"
+                headers: getAuthHeaders(),
+                body: JSON.stringify(formData)
             });
 
             if (res.ok) {

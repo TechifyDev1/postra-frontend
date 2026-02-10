@@ -9,7 +9,7 @@ import style from "./PostEditor.module.css";
 import Image from "@tiptap/extension-image";
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node";
 import LargeButton from "@/components/landing-page/cell/large-button/LargeButton";
-import { deleteUrl, getApost, publishPostUrl, signUrl, updatePostUrl, uploadUrl } from "@/utils";
+import { deleteUrl, getApost, publishPostUrl, signUrl, updatePostUrl, uploadUrl, getAuthHeaders } from "@/utils";
 import { useToast } from "@/contexts/ToastContext";
 import { notFound, useParams } from "next/navigation";
 import { useUserContext } from "@/hooks/use-user-context";
@@ -47,10 +47,8 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
     try {
       const res = await fetch(getApost(username, postSlug), {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: "include"
+        headers: getAuthHeaders(),
+        cache: "no-store",
       });
       if (!res.ok) {
         throw new Error("Could not find this post.");
@@ -158,6 +156,7 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
     const paramsToSign = { timestamp };
     console.log("Uploading Banner...");
     return new Promise((resolve, reject) => {
+      showToast("Uploading banner...please wait", "info")
       if (imgInpRef.current == null) return reject("No Post Banner input found");
       imgInpRef.current.click();
       imgInpRef.current.onchange = async (e: Event) => {
@@ -168,10 +167,7 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
         if (file.size > MAX_FILE_SIZE) return reject();
         const signRef = await fetch(signUrl(), {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          credentials: "include",
+          headers: getAuthHeaders(),
           body: JSON.stringify(paramsToSign)
         })
 
@@ -204,6 +200,7 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
           setPostBannerUrl(data.url);
           console.log(bannerImgRef);
           setPostBannerId(data.public_id);
+          showToast("Banner uploaded..", "success");
           return resolve();
         } catch (e) {
           if (e instanceof Error) {
@@ -221,10 +218,11 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
 
     // Only attempt to delete from Cloudinary if we have a public ID (newly uploaded image)
     if (postBannerId) {
+      showToast("Removing banner...please wait", "info")
       try {
         const res = await fetch(deleteUrl(postBannerId), {
           method: "DELETE",
-          credentials: "include" as RequestCredentials,
+          headers: getAuthHeaders(),
         });
 
         if (!res.ok) {
@@ -318,17 +316,16 @@ const PostEditor: FC<{ edit?: boolean }> = ({ edit = false }) => {
 
   if (!editor) return null;
   const handlePublish = async () => {
+    if (isPublishing) return;
     setIsPublishing(true);
     try {
       if (editor.isEmpty) throw new Error("Cannot publish empty post");
       if (title.trim().length === 0) throw new Error("Title cannot be empty");
+      showToast(`${edit ? "Updatating your post" : "Publishing your post"}`, "info")
 
       const res = await fetch(edit ? updatePostUrl(postSlug) : publishPostUrl, {
         method: edit ? "PUT" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: 'include' as RequestCredentials,
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           title: title.trim(),
           postBanner: postBannerUrl,

@@ -53,8 +53,7 @@ const SignInPopUp = () => {
             headers: {
                 'Content-Type': 'application/json',
                 'X-Client-Type': 'web'
-            },
-            credentials: 'include' as RequestCredentials
+            }
         }
         try {
             const res = await fetch(loginUrl, options);
@@ -68,6 +67,7 @@ const SignInPopUp = () => {
                 setUser(data.data);
                 if (data.data.token) {
                     document.cookie = `token=${data.data.token}; path=/; max-age=86400; SameSite=Lax`;
+                    localStorage.setItem('token', data.data.token);
                 }
             }
             setIsLoading(false);

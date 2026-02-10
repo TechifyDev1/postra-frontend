@@ -6,7 +6,7 @@ import MediumButton from "@/components/landing-page/cell/medium-button/MediumBut
 import { PaperPlane, X } from "phosphor-react";
 import CommentList from "../comment-list/CommentList";
 import { UseShowComments } from "@/hooks/use-show-comments";
-import { addCommentUrl, getCommentsUrl } from "@/utils";
+import { addCommentUrl, getCommentsUrl, getAuthHeaders } from "@/utils";
 import { useUserContext } from "@/hooks/use-user-context";
 import { useToast } from "@/contexts/ToastContext";
 import { useModalContext } from "@/hooks/use-modal-context";
@@ -21,7 +21,7 @@ const CommentBox: FC<{ postSlug: string }> = ({ postSlug }) => {
     const { showToast } = useToast();
     const { setShow } = UseShowComments();
     const { openModal } = useModalContext();
-    const {refetchComments} = useCommentsContext();
+    const { refetchComments } = useCommentsContext();
     useEffect(() => {
         fetchComments();
     }, [postSlug]);
@@ -31,10 +31,7 @@ const CommentBox: FC<{ postSlug: string }> = ({ postSlug }) => {
         try {
             const res = await fetch(getCommentsUrl(postSlug), {
                 method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
+                headers: getAuthHeaders()
             })
             const comments = res.json();
             console.log(await comments);
@@ -74,10 +71,7 @@ const CommentBox: FC<{ postSlug: string }> = ({ postSlug }) => {
         try {
             const res = await fetch(addCommentUrl(postSlug), {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include",
+                headers: getAuthHeaders(),
                 body: JSON.stringify(commentToSend)
             });
             const newComment = await res.json();
@@ -126,8 +120,8 @@ const CommentBox: FC<{ postSlug: string }> = ({ postSlug }) => {
 
             <form className={style.commentForm} onSubmit={handleSubmit}>
                 <textarea name="comment" id="comment" className={style.commentField} placeholder="Enter your comment" onChange={(e) => { setCommentText(e.target.value) }} value={commentText} />
-                <MediumButton type="submit"  disabled={isSending}>
-                    {isSending?"Sending..": <PaperPlane />}
+                <MediumButton type="submit" disabled={isSending}>
+                    {isSending ? "Sending.." : <PaperPlane />}
                 </MediumButton>
             </form>
         </div>

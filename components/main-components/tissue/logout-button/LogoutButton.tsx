@@ -20,8 +20,7 @@ const LogoutButton: FC = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                },
-                credentials: "include"
+                }
             });
             if (!res.ok) {
                 throw new Error("Unable to sign you out")
@@ -30,8 +29,9 @@ const LogoutButton: FC = () => {
             // Clear user state
             setUser(null);
 
-            // Clear token cookie
+            // Clear token cookie and localStorage
             document.cookie = "token=; path=/; max-age=0; SameSite=Lax";
+            localStorage.removeItem('token');
 
             // Show success message
             showToast("Logged out successfully", "success");

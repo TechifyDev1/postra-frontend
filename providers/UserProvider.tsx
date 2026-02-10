@@ -2,7 +2,7 @@
 
 import { UserContext } from "@/contexts/UserContext";
 import { userInterface } from "@/types/userType";
-import { getUserUrl } from "@/utils";
+import { getUserUrl, getAuthHeaders } from "@/utils";
 import { useRouter } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 
@@ -15,8 +15,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         try {
             const res = await fetch(getUserUrl("me"), {
                 method: "GET",
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include'
+                headers: getAuthHeaders()
             });
             const data = await res.json();
             setUser(data.data)

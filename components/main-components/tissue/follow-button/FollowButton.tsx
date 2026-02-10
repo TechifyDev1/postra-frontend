@@ -4,7 +4,7 @@ import style from './FollowButton.module.css';
 import { FollowButtonProps } from '@/types/types';
 import SmallText from '../../cell/small-text/SmallText';
 import { useUserContext } from '@/hooks/use-user-context';
-import { checkFollowUrl, followUrl } from '@/utils';
+import { checkFollowUrl, followUrl, getAuthHeaders } from '@/utils';
 import { ModalContext } from '@/contexts/ModalContext';
 import { useToast } from '@/contexts/ToastContext';
 import { UseProfileCounts } from '@/hooks/useProfileCounts';
@@ -15,15 +15,12 @@ const FollowButton: FC<FollowButtonProps> = ({ username }) => {
     const { user } = useUserContext();
     const { openModal } = useContext(ModalContext);
     const { showToast } = useToast();
-    const {refetchProfile} = UseProfileCounts();
+    const { refetchProfile } = UseProfileCounts();
     const getIsFollowing = async () => {
         try {
             const res = await fetch(checkFollowUrl(username), {
                 method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
+                headers: getAuthHeaders()
             })
             const data = await res.json();
             console.log(data);
@@ -49,10 +46,7 @@ const FollowButton: FC<FollowButtonProps> = ({ username }) => {
         try {
             const res = await fetch(followUrl(username), {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
+                headers: getAuthHeaders()
             })
             const data = await res.json();
             const message = data.message;

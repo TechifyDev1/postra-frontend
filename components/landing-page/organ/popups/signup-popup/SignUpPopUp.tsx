@@ -68,7 +68,14 @@ const SignUpPopUp: React.FC = () => {
             }
         }
         try {
-            const res = await fetch(createUserUrl, options);
+            const res = await fetch(createUserUrl, {
+                method: "POST",
+                body: JSON.stringify({ fullName, email, password, username }),
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Client-Type": "web"
+                }
+            });
             if (res.ok) {
                 console.log(res.body)
                 showToast("Signed Up successfully...Please Login.", "success");

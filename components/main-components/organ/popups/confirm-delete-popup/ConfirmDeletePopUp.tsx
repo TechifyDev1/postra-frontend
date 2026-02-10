@@ -6,7 +6,7 @@ import { useToast } from "@/contexts/ToastContext"
 import MediumButton from "@/components/landing-page/cell/medium-button/MediumButton"
 import Modal from "@/components/landing-page/tissue/modal/Modal"
 import style from "./ConfirmDeletePopUp.module.css"
-import { deletePostUrl } from "@/utils"
+import { deletePostUrl, getAuthHeaders } from "@/utils"
 import { useRouter } from "next/navigation"
 
 const ConfirmDeletePopUp = () => {
@@ -22,10 +22,7 @@ const ConfirmDeletePopUp = () => {
         try {
             const res = await fetch(deletePostUrl(deleteSlug), {
                 method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
+                headers: getAuthHeaders()
             })
 
             if (!res.ok) {

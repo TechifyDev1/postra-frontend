@@ -31,3 +31,12 @@ export const getRelativeTime = (isoString: string) => {
     if (Math.abs(diffInSecs) < 86400) return formatter.format(Math.round(diffInSecs / 3600), 'hour');
     return formatter.format(Math.round(diffInSecs / 86400), 'day');
 }
+
+export const getAuthHeaders = () => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    return {
+        'Content-Type': 'application/json',
+        'X-Client-Type': 'web',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+    };
+};
