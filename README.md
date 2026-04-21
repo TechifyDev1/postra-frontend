@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌐 Postra Web Frontend
 
-## Getting Started
+The official web frontend for the **Postra** social media platform, built with **Next.js** and **TypeScript**. It provides a high-performance, modern interface for web users.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Key Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **⚡ Modern Web Experience:** Fast navigation and server-side rendering with Next.js 16.
+- **✍️ Advanced Editor:** Rich text editing powered by [Tiptap](https://tiptap.dev/).
+- **💅 Styled with Sass:** Modular and maintainable styling using SCSS.
+- **✨ Phosphor Icons:** A clean, consistent iconography throughout the app.
+- **📱 Responsive Design:** Seamlessly adapts to different screen sizes.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack
 
-## Learn More
+- **Framework:** [Next.js](https://nextjs.org/) (App Router)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Text Editor:** [Tiptap](https://tiptap.dev/)
+- **Styling:** [Sass/SCSS](https://sass-lang.com/)
+- **Icons:** [Phosphor React](https://phosphoricons.com/)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites
 
-## Deploy on Vercel
+- Node.js (>= 18.x)
+- npm or yarn
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Installation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/TechifyDev1/postra-frontend.git
+   cd postra-frontend
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Build for production:**
+   ```bash
+   npm run build
+   ```
+
+---
+
+## 📁 Project Structure
+
+- `app/`: Next.js App Router pages and layouts.
+- `components/`: Reusable UI components.
+- `styles/`: Global and component-specific SCSS files.
+- `lib/`: Shared utility functions and services.
+- `hooks/`: Custom React hooks for global state and side-effects.
+
+---
+
+## 📄 License
+
+Internal use and development only.
