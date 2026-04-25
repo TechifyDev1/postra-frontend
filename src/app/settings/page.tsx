@@ -1,10 +1,12 @@
 'use client';
 
 import { SettingsSidebar } from '@/components/layout/SettingsSidebar';
+import { useRequireAuth } from '@/hooks';
 import { useState, FormEvent } from 'react';
 import Link from 'next/link';
 
 export default function EditProfilePage() {
+  const { isLoading } = useRequireAuth();
   const [formData, setFormData] = useState({
     fullName: 'Avery Davis',
     username: '@averydavis',
@@ -17,6 +19,18 @@ export default function EditProfilePage() {
     console.log('Save profile:', formData);
     // Handle save logic
   };
+
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="bg-[#fbf9f9] text-black min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block w-8 h-8 border-2 border-black border-t-transparent rounded-full animate-spin mb-4" />
+          <p className="text-sm text-zinc-600 uppercase tracking-widest">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#fbf9f9] text-black antialiased min-h-screen flex flex-col md:flex-row">

@@ -10,7 +10,12 @@
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.2.4",
+    "@tiptap/extension-image": "^3.22.4",
+    "@tiptap/extension-placeholder": "^3.22.4",
+    "@tiptap/react": "^3.22.4",
+    "@tiptap/starter-kit": "^3.22.4",
     "next": "^16.0.0",
+    "nextjs-toploader": "^3.9.17",
     "postcss": "^8.5.10",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

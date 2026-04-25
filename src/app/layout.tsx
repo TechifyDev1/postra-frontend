@@ -4,6 +4,7 @@ import '@/styles/global.css';
 import { ReactNode } from 'react';
 import { ToastProvider } from '@/contexts/ToastContext';
 import { UserProvider } from '@/providers/UserProvider';
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({ 
   subsets: ['latin'], 
@@ -20,6 +21,22 @@ const newsreader = Newsreader({
 export const metadata: Metadata = {
   title: 'Postra - Editorial Minimalism',
   description: 'A sanctuary for writers and readers who value clarity above all else. No noise, just words.',
+  icons: {
+    icon: '/postra-logo.png',
+    apple: '/postra-logo.png',
+  },
+  openGraph: {
+    title: 'Postra - Editorial Minimalism',
+    description: 'A sanctuary for writers and readers who value clarity above all else. No noise, just words.',
+    images: ['/postra-banner.jpg'],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Postra - Editorial Minimalism',
+    description: 'A sanctuary for writers and readers who value clarity above all else. No noise, just words.',
+    images: ['/postra-banner.jpg'],
+  },
 };
 
 export default function RootLayout({
@@ -30,6 +47,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="light">
       <body className={`${inter.variable} ${newsreader.variable} font-sans antialiased bg-[#fbf9f9] text-black`}>
+        <NextTopLoader 
+          color="#000000"
+          height={2}
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+        />
         <UserProvider>
           <ToastProvider>
             {children}

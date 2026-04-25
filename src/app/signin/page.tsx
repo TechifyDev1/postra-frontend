@@ -5,9 +5,17 @@ import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/contexts/ToastContext';
 import { useUserContext } from '@/hooks/useUserContext';
+import { useRequireAuth } from '@/hooks';
+import { setAuthToken } from '@/lib/auth/authGuard';
 import { loginUrl } from '@/lib/api/client';
 
 export default function SignInPage() {
+  // Redirect authenticated users to home
+  const { isLoading } = useRequireAuth({ 
+    redirectTo: '/home', 
+    redirectIfAuthenticated: true 
+  });
+
   const [formData, setFormData] = useState({
     usernameOrEmail: '',
     password: '',
@@ -16,6 +24,18 @@ export default function SignInPage() {
   const router = useRouter();
   const { showToast } = useToast();
   const { refetchUser } = useUserContext();
+
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="bg-[#fbf9f9] text-black min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block w-8 h-8 border-2 border-black border-t-transparent rounded-full animate-spin mb-4" />
+          <p className="text-sm text-zinc-600 uppercase tracking-widest">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -52,9 +72,8 @@ export default function SignInPage() {
       showToast(data.message || 'Welcome back!', 'success');
       
       if (data.data && data.data.token) {
-        // Store token in both localStorage and cookies
-        localStorage.setItem('token', data.data.token);
-        document.cookie = `token=${data.data.token}; path=/; max-age=86400; SameSite=Lax`;
+        // Store token using auth utilities
+        setAuthToken(data.data.token);
         
         // Refetch user data
         await refetchUser();

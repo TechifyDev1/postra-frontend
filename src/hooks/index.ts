@@ -33,3 +33,4 @@ export const useAsync = <T,>(
 
 export { useProfileCounts } from './useProfileCounts';
 export { useUserContext } from './useUserContext';
+export { useRequireAuth } from './useRequireAuth';

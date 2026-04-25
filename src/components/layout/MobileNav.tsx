@@ -27,7 +27,7 @@ export const MobileNav = ({ activeTab = 'home' }: MobileNavProps) => {
       </Link>
 
       <Link
-        href="/search"
+        href="/coming-soon"
         className={`flex flex-col items-center justify-center ${
           activeTab === 'discover' ? 'text-black font-bold' : 'text-zinc-400'
         } hover:text-black active:scale-95 transition-transform`}

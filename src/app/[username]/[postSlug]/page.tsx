@@ -1,6 +1,7 @@
 import { ArticleNavigation } from '@/components/layout/ArticleNavigation';
 import { ArticleFooter } from '@/components/layout/ArticleFooter';
 import { ArticleHeader } from '@/components/ui/ArticleHeader';
+import { ArticleBody } from '@/components/ui/ArticleBody';
 import { AuthorBio } from '@/components/ui/AuthorBio';
 import { TagList } from '@/components/ui/TagList';
 import { CommentSection } from '@/components/ui/CommentSection';
@@ -20,19 +21,19 @@ export async function generateStaticParams() {
       },
       cache: 'force-cache'
     });
-    
+
     if (!res.ok) {
       // Return a placeholder to satisfy cacheComponents requirement
       return [{ username: 'placeholder', postSlug: 'placeholder' }];
     }
-    
+
     const data = await res.json();
     const posts = data.content || [];
-    
+
     if (posts.length === 0) {
       return [{ username: 'placeholder', postSlug: 'placeholder' }];
     }
-    
+
     return posts.map((post: any) => ({
       username: post.username,
       postSlug: post.slug,
@@ -44,10 +45,10 @@ export async function generateStaticParams() {
 }
 
 // Generate metadata for SEO
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: Promise<{ username: string; postSlug: string }> 
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ username: string; postSlug: string }>
 }): Promise<Metadata> {
   try {
     const { username, postSlug } = await params;
@@ -70,10 +71,10 @@ export async function generateMetadata({
     const description = post.subTitle?.length > 0
       ? post.subTitle
       : (post.content?.replace(/<[^>]*>/g, "").slice(0, 150).replace(/\s+$/, "") + "...");
-    
+
     const postUrl = `${frontendBaseUrl}/${username}/${postSlug}`;
-    const postImage = (post.postBanner && post.postBanner !== "") 
-      ? post.postBanner 
+    const postImage = (post.postBanner && post.postBanner !== "")
+      ? post.postBanner
       : `${frontendBaseUrl}/postra-banner.jpg`;
     const title = `${post.title} | ${post.authorFullName} | Postra`;
 
@@ -113,10 +114,10 @@ export async function generateMetadata({
   }
 }
 
-export default async function ArticlePage({ 
-  params 
-}: { 
-  params: Promise<{ username: string; postSlug: string }> 
+export default async function ArticlePage({
+  params
+}: {
+  params: Promise<{ username: string; postSlug: string }>
 }) {
   const { username, postSlug } = await params;
   let post;
@@ -136,6 +137,7 @@ export default async function ArticlePage({
     }
 
     post = await res.json();
+    console.log(post)
   } catch (error) {
     console.error('Error fetching article:', error);
     notFound();
@@ -155,8 +157,9 @@ export default async function ArticlePage({
             slug={post.slug}
             author={{
               name: post.authorFullName,
-              image: post.profilePic || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80',
+              image: post.authorProfilePic,
             }}
+            authorUsername={post.authorUsername}
             date={new Date(post.createdAt).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
@@ -181,20 +184,20 @@ export default async function ArticlePage({
             </figure>
           )}
 
-          {/* Article Body - render from API content */}
-          <div 
-            className="text-xl leading-relaxed text-black space-y-8"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          {/* Article Body */}
+          <ArticleBody content={post.content} />
 
           {/* Article Footer */}
           <footer className="mt-16 pt-8 border-t border-zinc-200">
             <TagList tags={[]} />
-            <AuthorBio author={{
-              name: post.authorFullName,
-              image: post.profilePic || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80',
-              bio: '',
-            }} />
+            <AuthorBio
+              author={{
+                name: post.authorFullName,
+                image: post.authorProfilePic,
+                bio: post.authorBio || '',
+              }}
+              username={post.authorUsername}
+            />
           </footer>
 
           {/* Comments Section */}

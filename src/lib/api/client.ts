@@ -1,9 +1,11 @@
 // API client for backend communication - matches main branch implementation
+import { getToken } from '@/lib/auth/authGuard';
+
 const baseUrl = "https://postra-backend.onrender.com/api";
 
-// Helper function to get auth headers
+// Helper function to get auth headers (iOS-compatible)
 export const getAuthHeaders = () => {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  const token = typeof window !== 'undefined' ? getToken() : null;
   return {
     'Content-Type': 'application/json',
     'X-Client-Type': 'web',

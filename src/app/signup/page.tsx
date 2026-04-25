@@ -4,9 +4,16 @@ import Link from 'next/link';
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/contexts/ToastContext';
+import { useRequireAuth } from '@/hooks';
 import { createUserUrl } from '@/lib/api/client';
 
 export default function SignUpPage() {
+  // Redirect authenticated users to home
+  const { isLoading } = useRequireAuth({ 
+    redirectTo: '/home', 
+    redirectIfAuthenticated: true 
+  });
+
   const [formData, setFormData] = useState({
     fullName: '',
     username: '',
@@ -17,6 +24,18 @@ export default function SignUpPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { showToast } = useToast();
+
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="bg-[#fbf9f9] text-black min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block w-8 h-8 border-2 border-black border-t-transparent rounded-full animate-spin mb-4" />
+          <p className="text-sm text-zinc-600 uppercase tracking-widest">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

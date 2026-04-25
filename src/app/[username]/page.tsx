@@ -20,7 +20,6 @@ export async function generateStaticParams() {
     });
     
     if (!res.ok) {
-      // Return a placeholder to satisfy cacheComponents requirement
       return [{ username: 'placeholder' }];
     }
     
@@ -31,7 +30,6 @@ export async function generateStaticParams() {
       return [{ username: 'placeholder' }];
     }
     
-    // Get unique usernames from posts
     const uniqueUsernames = [...new Set(posts.map((post: any) => post.username))] as string[];
     
     return uniqueUsernames.map((username) => ({
@@ -66,7 +64,7 @@ export async function generateMetadata({
     }
 
     const user = await res.json();
-    const userData = user.data || user; // Try both with and without data wrapper
+    const userData = user.data || user;
     const profileUrl = `${frontendBaseUrl}/${username}`;
 
     return {
@@ -129,7 +127,6 @@ export default async function WriterProfilePage({
     }
 
     user = await userRes.json();
-    // API wraps response in data property
     userData = user.data || user;
 
     // Fetch user's stories
@@ -163,11 +160,11 @@ export default async function WriterProfilePage({
         <hr className="border-t border-zinc-200 mb-16" />
 
         {/* Published Stories List */}
-        <section className="flex flex-col gap-16">
+        <section className="flex flex-col gap-16" id='posts'>
           <h2 className="text-xs text-zinc-400 uppercase tracking-widest mb-2 font-semibold">Selected Works</h2>
 
           {stories.map((story: any, index: number) => (
-            <div key={story.id}>
+            <div key={story.id} className="relative">
               <Link href={`/${username}/${story.slug}`}>
                 <ProfileStoryItem
                   date={new Date(story.createdAt).toLocaleDateString('en-US', {
@@ -178,6 +175,8 @@ export default async function WriterProfilePage({
                   readTime="5 min read"
                   title={story.title}
                   excerpt={story.subTitle || ''}
+                  slug={story.slug}
+                  username={username}
                 />
               </Link>
               {index < stories.length - 1 && (

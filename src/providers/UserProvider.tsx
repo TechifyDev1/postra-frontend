@@ -2,6 +2,7 @@
 
 import { UserContext, User } from '@/contexts/UserContext';
 import { getUserUrl, getAuthHeaders } from '@/lib/api/client';
+import { getToken } from '@/lib/auth/authGuard';
 import { useRouter } from 'next/navigation';
 import { ReactNode, useEffect, useState } from 'react';
 
@@ -12,7 +13,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchMe = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = getToken(); // Use iOS-compatible getToken
       if (!token) {
         setUser(null);
         setIsLoading(false);
@@ -30,6 +31,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setUser(data.data || data);
         router.refresh();
       } else {
+        // Token might be invalid or expired
         setUser(null);
       }
     } catch (error) {

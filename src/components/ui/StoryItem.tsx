@@ -6,12 +6,14 @@ interface StoryItemProps {
   title: string;
   excerpt: string;
   author: string;
+  username: string;
+  slug: string;
 }
 
-export const StoryItem = ({ category, date, title, excerpt, author }: StoryItemProps) => {
+export const StoryItem = ({ category, date, title, excerpt, author, username, slug }: StoryItemProps) => {
   return (
     <article className="group cursor-pointer">
-      <Link href="#">
+      <Link href={`/${username}/${slug}`}>
         <div className="flex flex-col md:flex-row gap-6 items-start">
           <div className="flex-grow flex flex-col gap-4">
             <div className="flex items-center gap-2 text-xs uppercase tracking-widest font-semibold text-zinc-500">
