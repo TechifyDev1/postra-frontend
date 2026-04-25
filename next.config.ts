@@ -25,8 +25,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Enable cache components for better performance (Next.js 16+)
-  cacheComponents: true,
+  // Disable cache components to allow dynamic routes with client components
+  cacheComponents: false,
 };
 
 export default nextConfig;

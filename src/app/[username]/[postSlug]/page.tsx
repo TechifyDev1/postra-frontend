@@ -58,6 +58,8 @@ export async function generateMetadata({
         'Content-Type': 'application/json',
         'X-Client-Type': 'web',
       },
+      cache: 'force-cache', // Cache metadata fetches
+      next: { revalidate: 3600 } // Revalidate every hour
     });
 
     if (!res.ok) {
@@ -129,7 +131,8 @@ export default async function ArticlePage({
         'Content-Type': 'application/json',
         'X-Client-Type': 'web',
       },
-      cache: 'force-cache'
+      cache: 'force-cache',
+      next: { revalidate: 3600 } // Revalidate every hour
     });
 
     if (!res.ok) {

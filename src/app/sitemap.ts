@@ -33,15 +33,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   try {
-    // Fetch up to 100 posts
+    // Fetch up to 100 posts with timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+
     const res = await fetch(getPosts(0, 100), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'X-Client-Type': 'web',
       },
-      cache: 'no-store', // Always get fresh data for sitemap
+      cache: 'force-cache',
+      next: { revalidate: 3600 }, // Revalidate every hour
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (!res.ok) {
       console.error('Failed to fetch posts for sitemap');

@@ -14,7 +14,8 @@ export default async function Home() {
         'Content-Type': 'application/json',
         'X-Client-Type': 'web',
       },
-      cache: 'no-store'
+      cache: 'force-cache',
+      next: { revalidate: 3600 } // Revalidate every hour
     });
 
     if (res.ok) {
