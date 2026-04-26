@@ -2,26 +2,61 @@
 
 import { SettingsSidebar } from '@/components/layout/SettingsSidebar';
 import { useRequireAuth } from '@/hooks';
-import { useState, FormEvent } from 'react';
+import { useUserContext } from '@/hooks/useUserContext';
+import { useState, useEffect, FormEvent } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { DefaultAvatar } from '@/components/ui/DefaultAvatar';
+import { useToast } from '@/contexts/ToastContext';
+import { updateUserUrl, getAuthHeaders } from '@/lib/api/client';
 
 export default function EditProfilePage() {
   const { isLoading } = useRequireAuth();
+  const { user, refetchUser } = useUserContext();
+  const { showToast } = useToast();
   const [formData, setFormData] = useState({
-    fullName: 'Avery Davis',
-    username: '@averydavis',
-    bio: 'Writer, editor, and observer. Exploring the intersection of design and narrative.',
-    website: 'https://averydavis.work',
+    fullName: '',
+    bio: '',
+    website: '',
   });
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        fullName: user.fullName || '',
+        bio: user.bio || '',
+        website: user.website || '',
+      });
+    }
+  }, [user]);
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log('Save profile:', formData);
-    // Handle save logic
+    setIsSaving(true);
+
+    try {
+      const res = await fetch(updateUserUrl(), {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        showToast('Profile updated successfully', 'success');
+        await refetchUser();
+      } else {
+        throw new Error('Failed to update profile');
+      }
+    } catch (error) {
+      showToast('Failed to update profile', 'error');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  // Show loading state while checking authentication
-  if (isLoading) {
+  // Show loading state while checking authentication or loading user
+  if (isLoading || !user) {
     return (
       <div className="bg-[#fbf9f9] text-black min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -53,7 +88,19 @@ export default function EditProfilePage() {
             {/* Profile Picture */}
             <div className="flex items-start gap-4">
               <div className="relative group">
-                <div className="w-32 h-32 bg-zinc-200 border border-zinc-300" />
+                <div className="w-32 h-32 bg-zinc-200 border border-zinc-300 overflow-hidden">
+                  {user.profilePictureUrl ? (
+                    <Image
+                      src={user.profilePictureUrl}
+                      alt={user.fullName}
+                      width={128}
+                      height={128}
+                      className="object-cover grayscale"
+                    />
+                  ) : (
+                    <DefaultAvatar size={128} />
+                  )}
+                </div>
                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                   <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
@@ -92,10 +139,11 @@ export default function EditProfilePage() {
                 <input
                   id="username"
                   type="text"
-                  value={formData.username}
-                  onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                  className="text-xl text-black bg-transparent border-0 border-b border-zinc-200 px-0 py-2 focus:ring-0 focus:outline-none focus:border-black focus:border-b-2 transition-colors"
+                  value={`@${user.username}`}
+                  disabled
+                  className="text-xl text-zinc-400 bg-transparent border-0 border-b border-zinc-200 px-0 py-2 cursor-not-allowed"
                 />
+                <p className="text-xs text-zinc-500 mt-1">Username cannot be changed</p>
               </div>
 
               <div className="flex flex-col">
@@ -129,12 +177,13 @@ export default function EditProfilePage() {
             <div className="pt-4 flex gap-4 border-t border-zinc-200">
               <button
                 type="submit"
-                className="bg-black text-white text-xs px-8 py-4 hover:bg-zinc-800 transition-colors uppercase tracking-widest font-semibold"
+                disabled={isSaving}
+                className="bg-black text-white text-xs px-8 py-4 hover:bg-zinc-800 transition-colors uppercase tracking-widest font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                SAVE CHANGES
+                {isSaving ? 'SAVING...' : 'SAVE CHANGES'}
               </button>
               <Link
-                href="/profile"
+                href={`/${user.username}`}
                 className="bg-transparent text-black border border-black text-xs px-8 py-4 hover:bg-zinc-100 transition-colors uppercase tracking-widest font-semibold inline-flex items-center"
               >
                 CANCEL

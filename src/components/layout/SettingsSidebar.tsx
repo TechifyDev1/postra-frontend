@@ -1,19 +1,34 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
+import { useUserContext } from '@/hooks/useUserContext';
+import { DefaultAvatar } from '@/components/ui/DefaultAvatar';
 
 interface SettingsSidebarProps {
   activeTab?: 'overview' | 'analytics' | 'followers' | 'security';
 }
 
 export const SettingsSidebar = ({ activeTab = 'overview' }: SettingsSidebarProps) => {
+  const { user } = useUserContext();
+
   return (
     <nav className="hidden md:flex flex-col w-64 h-screen sticky top-0 bg-white border-r border-zinc-100 transition-all duration-300">
       <div className="p-6 border-b border-zinc-100">
         <h1 className="font-black uppercase text-xl mb-6">POSTRA</h1>
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full overflow-hidden bg-zinc-200">
-            <div className="w-full h-full bg-zinc-300" />
+          <div className="w-12 h-12 flex-shrink-0 aspect-square rounded-full overflow-hidden bg-zinc-200 relative">
+            {user?.profilePictureUrl ? (
+              <Image
+                src={user.profilePictureUrl}
+                alt={user.fullName}
+                fill
+                sizes="48px"
+                className="object-cover grayscale"
+              />
+            ) : (
+              <DefaultAvatar size={48} />
+            )}
           </div>
           <div>
             <div className="text-lg leading-tight font-medium">Profile Settings</div>

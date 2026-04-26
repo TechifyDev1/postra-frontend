@@ -6,18 +6,15 @@ export interface ApiResponse<T> {
   error?: string;
 }
 
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  avatar?: string;
-}
-
 export interface Post {
   id: string;
   title: string;
   content: string;
-  author: User;
+  author: {
+    id: string;
+    name: string;
+    avatar?: string;
+  };
   createdAt: string;
   updatedAt: string;
 }

@@ -6,6 +6,7 @@ export interface User {
   username: string;
   fullName: string;
   bio?: string;
+  website?: string;
   profilePictureUrl?: string;
   numOfFollowers?: number;
   numOfFollowing?: number;
