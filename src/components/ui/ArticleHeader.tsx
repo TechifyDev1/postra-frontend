@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { LikeButton } from './LikeButton';
 import { DefaultAvatar } from './DefaultAvatar';
 import { useToast } from '@/contexts/ToastContext';
+import { useUserContext } from '@/hooks/useUserContext';
 import { deletePostUrl, getAuthHeaders } from '@/lib/api/client';
 
 interface ArticleHeaderProps {
@@ -39,21 +40,16 @@ export const ArticleHeader = ({
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
   const { showToast } = useToast();
+  const { user } = useUserContext();
 
   useEffect(() => {
     // Check if current user is the post owner
-    const token = localStorage.getItem('token');
-    if (token && authorUsername) {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        console.log(payload)
-        const username = payload.sub || payload.username;
-        setIsOwner(username === authorUsername);
-      } catch (error) {
-        console.error('Error checking ownership:', error);
-      }
+    if (user && authorUsername) {
+      setIsOwner(user.username === authorUsername);
+    } else {
+      setIsOwner(false);
     }
-  }, [authorUsername]);
+  }, [user, authorUsername]);
 
   const handleEdit = () => {
     router.push(`/edit/${slug}`);

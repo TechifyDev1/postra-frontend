@@ -6,6 +6,7 @@ import { AuthorBio } from '@/components/ui/AuthorBio';
 import { TagList } from '@/components/ui/TagList';
 import { CommentSection } from '@/components/ui/CommentSection';
 import { getApost, getPosts, frontendBaseUrl } from '@/lib/api/client';
+import { calculateReadTime } from '@/utils';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import type { Metadata } from 'next';
@@ -154,7 +155,7 @@ export default async function ArticlePage({
         <article>
           <ArticleHeader
             category="ESSAYS"
-            readTime="5 MIN READ"
+            readTime={calculateReadTime(post.content).toUpperCase()}
             title={post.title}
             subtitle={post.subTitle}
             slug={post.slug}

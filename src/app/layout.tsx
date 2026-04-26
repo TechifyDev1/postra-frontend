@@ -31,12 +31,15 @@ export const metadata: Metadata = {
     description: 'A sanctuary for writers and readers who value clarity above all else. No noise, just words.',
     images: ['/postra-banner.jpg'],
     type: 'website',
+    siteName: 'Postra',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Postra - Editorial Minimalism',
     description: 'A sanctuary for writers and readers who value clarity above all else. No noise, just words.',
     images: ['/postra-banner.jpg'],
+    site: '@postra',
+    creator: '@postra',
   },
 };
 

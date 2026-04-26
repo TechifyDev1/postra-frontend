@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { FeedItem } from './FeedItem';
+import { calculateReadTime } from '@/utils';
 
 interface FeaturedCarouselProps {
   posts: Array<{
@@ -15,6 +16,7 @@ interface FeaturedCarouselProps {
     likeCount: number;
     commentCount: number;
     postBanner?: string;
+    content: string;
   }>;
 }
 
@@ -47,7 +49,7 @@ export const FeaturedCarousel = ({ posts }: FeaturedCarouselProps) => {
         date={new Date(currentPost.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
         title={currentPost.title}
         excerpt={currentPost.subTitle || ''}
-        readTime="5 min read"
+        readTime={calculateReadTime(currentPost.content)}
         initialLikes={currentPost.likeCount || 0}
         initialComments={currentPost.commentCount || 0}
         postBanner={currentPost.postBanner}

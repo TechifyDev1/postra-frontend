@@ -19,13 +19,13 @@ export const ArticleFooter = () => {
           <Link href="#" className="text-zinc-500 hover:text-black transition-colors duration-200">
             Masthead
           </Link>
-          <Link href="#" className="text-zinc-500 hover:text-black transition-colors duration-200">
+          <Link href="https://x.com/techifydev_1" className="text-zinc-500 hover:text-black transition-colors duration-200">
             Twitter
           </Link>
         </nav>
         
         <div className="text-zinc-500 text-center md:text-right text-xs">
-          © 2024 POSTRA. THE CADENCE OF THE WRITTEN WORD.
+          &copy; {new Date().getFullYear()} POSTRA. THE CADENCE OF THE WRITTEN WORD.
         </div>
       </div>
     </footer>

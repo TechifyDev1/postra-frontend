@@ -24,13 +24,13 @@ export const Footer = () => {
           <Link href="#" className="text-zinc-600 hover:text-black transition-colors">
             Masthead
           </Link>
-          <Link href="#" className="text-zinc-600 hover:text-black transition-colors">
+          <Link href="https://x.com/techifydev_1" className="text-zinc-600 hover:text-black transition-colors">
             Twitter
           </Link>
         </nav>
 
         <div className="font-serif text-[11px] uppercase tracking-widest text-zinc-600 text-center md:text-right">
-          © 2024 Postra. The Cadence of the Written Word.
+          &copy; {new Date().getFullYear()} Postra. The Cadence of the Written Word.
         </div>
       </div>
     </footer>

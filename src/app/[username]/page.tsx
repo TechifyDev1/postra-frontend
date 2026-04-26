@@ -3,6 +3,7 @@ import { MobileNav } from '@/components/layout/MobileNav';
 import { ProfileStoryItem } from '@/components/ui/ProfileStoryItem';
 import { ProfileHeader } from '@/components/ui/ProfileHeader';
 import { getUserUrl, getUserPostsUrl, frontendBaseUrl, getPosts } from '@/lib/api/client';
+import { calculateReadTime } from '@/utils';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
@@ -172,7 +173,7 @@ export default async function WriterProfilePage({
                     month: 'short',
                     day: 'numeric',
                   })}
-                  readTime="5 min read"
+                  readTime={calculateReadTime(story.content)}
                   title={story.title}
                   excerpt={story.subTitle || ''}
                   slug={story.slug}

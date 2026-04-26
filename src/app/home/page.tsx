@@ -4,6 +4,7 @@ import { FeedItem } from '@/components/ui/FeedItem';
 import { FeaturedCarousel } from '@/components/ui/FeaturedCarousel';
 import { FollowCard } from '@/components/ui/FollowCard';
 import { getPosts } from '@/lib/api/client';
+import { calculateReadTime } from '@/utils';
 import { headers } from 'next/headers';
 
 export default async function HomePage() {
@@ -79,7 +80,7 @@ export default async function HomePage() {
                   date={new Date(post.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   title={post.title}
                   excerpt={post.subTitle || ''}
-                  readTime="5 min read"
+                  readTime={calculateReadTime(post.content)}
                   initialLikes={post.likeCount || 0}
                   initialComments={post.commentCount || 0}
                   postBanner={post.postBanner}

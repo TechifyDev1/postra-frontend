@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/contexts/ToastContext';
+import { useUserContext } from '@/hooks/useUserContext';
 import { deletePostUrl, getAuthHeaders } from '@/lib/api/client';
 
 interface ProfileStoryItemProps {
@@ -27,22 +28,16 @@ export const ProfileStoryItem = ({
   const [isOwner, setIsOwner] = useState(false);
   const router = useRouter();
   const { showToast } = useToast();
+  const { user } = useUserContext();
 
   useEffect(() => {
-    // Check ownership on client side only
-    if (typeof window !== 'undefined' && username) {
-      const token = localStorage.getItem('token');
-      if (token) {
-        try {
-          const payload = JSON.parse(atob(token.split('.')[1]));
-          const currentUsername = payload.sub || payload.username;
-          setIsOwner(currentUsername === username);
-        } catch (error) {
-          console.error('Error checking ownership:', error);
-        }
-      }
+    // Check if current user is the profile owner
+    if (user && username) {
+      setIsOwner(user.username === username);
+    } else {
+      setIsOwner(false);
     }
-  }, [username]);
+  }, [user, username]);
 
   const handleEdit = (e: React.MouseEvent) => {
     e.preventDefault();
