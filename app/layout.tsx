@@ -63,7 +63,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta name="google-site-verification" content="jjegQ2Hi3U5KA2rTXyOj3vbCCzWUGW-cTwBSKUaWz3c" />
+        <meta name="google-site-verification" content="PMFoHaGRAzBKrXtGKPqxe5zvveWfqml8jH1-S0aP2i0" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
       <NextTopLoader color="black" />
