@@ -22,6 +22,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://postra-frontend.vercel.app'),
   title: 'Postra - Editorial Minimalism',
   description: 'A sanctuary for writers and readers who value clarity above all else. No noise, just words.',
+  verification: {
+    google: 'PMFoHaGRAzBKrXtGKPqxe5zvveWfqml8jH1-S0aP2i0',
+  },
   icons: {
     icon: '/postra-logo.png',
     apple: '/postra-logo.png',
